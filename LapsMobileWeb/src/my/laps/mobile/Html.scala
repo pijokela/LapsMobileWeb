@@ -10,12 +10,14 @@ class Html(val conf : UserConf) {
 	    <head>
 	      <title>My Laps Mobile</title>
 	      <link rel="stylesheet" href="style.css" />
+	      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	    </head>
 	    <body>
 	  """
 	  
 	val footer = """
 	    <h1><a href="?">Change track</a></h1>
+        <script src="scripts.js"></script>
 	    </body>
 	  </html>
 	  """
@@ -77,7 +79,8 @@ class Html(val conf : UserConf) {
 	  "</ul>" + 
 	  "</ul>" + 
 	  """<h2>Session laps</h2>
-	  <ol>""" + session.lapsWithErrors.map(pair=>sessionLap(pair._1, pair._2)).mkString("\n") + """</ol>"""
+	  <div class="hiddenLapList"><span class="showButton">... show ...</span>
+	  <ol>""" + session.lapsWithErrors.map(pair=>sessionLap(pair._1, pair._2)).mkString("\n") + """</ol></div>"""
 	
 	def transponderSessions(practiceSessionDay : PracticeSessionDay) = trackSummary(practiceSessionDay.track) + """
 	    <h2>Results from """ + conf.formatDate(practiceSessionDay.date) + """</h2>
