@@ -2,8 +2,11 @@ package my.laps.mobile
 
 import scala.io.Source
 import scala.io.Codec
+import my.laps.mobileweb.MylapsConf
+import my.laps.mobileweb.MylapsConf
+import my.laps.mobileweb.MylapsConf
 
-class PracticeWebsiteDao(urlBase : String) {
+class PracticeWebsiteDao(urlBase : String, conf : MylapsConf = new MylapsConf()) {
   private def url(tid : Long) = urlBase + "/practice/showTrack.jsp?tid=" + tid
 
   private def sourceFromUrlString(url : String) = Source.fromURL(url)(Codec.UTF8)
@@ -12,7 +15,7 @@ class PracticeWebsiteDao(urlBase : String) {
     val urlString = url(tid)
     val source = sourceFromUrlString(urlString)
     val parser = try {
-      new TrackStatusParser(source)
+      new TrackStatusParser(source, conf)
     }
     catch {
       case e : Exception => throw new RuntimeException("Failed to load web page from: " + urlString, e)
@@ -27,7 +30,7 @@ class PracticeWebsiteDao(urlBase : String) {
     val urlString = url(tid)
     val source = sourceFromUrlString(urlString)
     val parser = try {
-      new TrackStatusParser(source)
+      new TrackStatusParser(source, conf)
     }
     catch {
       case e : Exception => throw new RuntimeException("Failed to load web page from: " + urlString, e)
@@ -44,7 +47,7 @@ class PracticeWebsiteDao(urlBase : String) {
     val urlString = url(tid, transponder)
     val source = sourceFromUrlString(urlString)
     val track = getTrackStatus(tid)
-    val parser = new PracticeSessionParser(track, source, validator)
+    val parser = new PracticeSessionParser(track, source, validator, conf)
     source.close
     parser.parseTrackPracticeDay
   }

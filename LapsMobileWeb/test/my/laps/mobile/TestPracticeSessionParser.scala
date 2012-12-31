@@ -3,6 +3,7 @@ package my.laps.mobile
 //import org.junit.Test
 //import org.junit.Assert
 import scala.io.Source
+import my.laps.mobileweb.MylapsConf
 
 /**
  * http://www.mylaps.com/practice/showLaptimes.jsp?tid=1429&transponder=5778155
@@ -12,7 +13,7 @@ object TestPracticeSessionParser {
     val so = Source.fromFile("test/my/laps/mobile/practice-session-data.txt")
     
     val track = TrackStatus(true, "name", "location", 1429, Length(70, "m"))
-    val parser = new PracticeSessionParser(track, so, new LapValidator(1000, 100000))
+    val parser = new PracticeSessionParser(track, so, new LapValidator(1000, 100000), new MylapsConf())
     val r = parser.parseTrackPracticeDay
 //    Assert.assertNotNull(r)
     println(r)

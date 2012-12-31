@@ -1,8 +1,10 @@
 package my.laps.mobile
 
 import java.util.Locale
+import my.laps.mobileweb.UserConf
+import my.laps.mobileweb.UserConf
 
-class Html(val locale : Locale) {
+class Html(val conf : UserConf) {
 	val header = """<!DOCTYPE html>
 	  <html>
 	    <head>
@@ -48,7 +50,7 @@ class Html(val locale : Locale) {
 	  
 	def practiceSessionSummary(tid : Long, sessionListItem : PracticeSessionListItem) = """
 	  <div><a href="?tid=""" + tid + "&transponder=" + sessionListItem.driver.transponder.number + """">""" + 
-	  sessionListItem.driver.name + """</a> from """ + App.formatDate(sessionListItem.date, locale) + """</div>
+	  sessionListItem.driver.name + """</a> from """ + conf.formatDate(sessionListItem.date) + """</div>
 	  """
 	  
 	def trackTrainingDay(day : TrackPracticeDay) = trackSummary(day.track) + """
@@ -57,28 +59,28 @@ class Html(val locale : Locale) {
 	
 	def sessionLap(lap : Lap, error : Option[String]) : String = 
 	  error match {
-	    case Some(e) => """<li class="invalid">""" + lap.durationMs + " ms - " + e + "</li>\n"
-	    case None => """<li class="valid">""" + lap.durationMs + " ms</li>\n"
+	    case Some(e) => """<li class="invalid">""" + conf.lapDuration(lap) + " - " + e + "</li>\n"
+	    case None => """<li class="valid">""" + conf.lapDuration(lap) + "</li>\n"
 	  }
 	
 	def sessionLapSection(session : PracticeSession) = 
-	  """<h1>Session """ + App.formatTime(session.startDate, locale) + """</h1>""" + 
+	  """<h1>Session """ + conf.formatTime(session.startDate) + """</h1>""" + 
 	  "<ul><li>Total laps: " + session.laps.size + "</li>" +
-	  "<ul><li>Best lap: " + session.bestLapFromAllLaps.durationMs + " ms</li>" +
-	  "<li>Average lap: " + session.averageMsAllLaps.asInstanceOf[Long] + " ms</li>" +
-	  "<li>Slowest lap: " + session.worstLapFromAllLaps.durationMs + " ms</li>" +
+	  "<ul><li>Best lap: " + conf.lapDuration(session.bestLapFromAllLaps) + "</li>" +
+	  "<li>Average lap: " + conf.lapDuration(session.averageMsAllLaps) + "</li>" +
+	  "<li>Slowest lap: " + conf.lapDuration(session.worstLapFromAllLaps) + "</li>" +
 	  "</ul>" + 
 	  "<li>Valid laps: " + session.validLaps.size + "</li>" +
-	  "<ul><li>Best lap: " + session.bestLapFromValidLaps.durationMs + " ms</li>" +
-	  "<li>Average lap: " + session.averageMsValidLaps.asInstanceOf[Long] + " ms</li>" +
-	  "<li>Slowest lap: " + session.worstLapFromValidLaps.durationMs + " ms</li>" +
+	  "<ul><li>Best lap: " + conf.lapDuration(session.bestLapFromValidLaps) + "</li>" +
+	  "<li>Average lap: " + conf.lapDuration(session.averageMsValidLaps) + "</li>" +
+	  "<li>Slowest lap: " + conf.lapDuration(session.worstLapFromValidLaps) + "</li>" +
 	  "</ul>" + 
 	  "</ul>" + 
 	  """<h2>Session laps</h2>
 	  <ol>""" + session.lapsWithErrors.map(pair=>sessionLap(pair._1, pair._2)).mkString("\n") + """</ol>"""
 	
 	def transponderSessions(practiceSessionDay : PracticeSessionDay) = trackSummary(practiceSessionDay.track) + """
-	    <h2>Results from """ + App.formatDate(practiceSessionDay.date, locale) + """</h2>
+	    <h2>Results from """ + conf.formatDate(practiceSessionDay.date) + """</h2>
 	  """ + driverSummary(practiceSessionDay.driver) + """
 	  """ + practiceSessionDay.sessions.map(sessionLapSection(_)).mkString("\n")
 }

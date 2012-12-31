@@ -58,7 +58,8 @@ class LapsMobileServlet extends HttpServlet {
 	
   override def doGet(req : HttpServletRequest, resp : HttpServletResponse) = {
     val validator = getValidator(req)
-	val html = new Html(new Locale("fi", "FI"))
+    val conf = new UserConf()
+	val html = new Html(conf)
 	val dao = new PracticeWebsiteDao("http://www.mylaps.com")
     
 	resp.setContentType("text/html")

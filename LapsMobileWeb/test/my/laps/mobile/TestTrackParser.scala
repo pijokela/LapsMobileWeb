@@ -2,6 +2,7 @@ package my.laps.mobile
 
 //import org.junit.Test
 import scala.io.Source
+import my.laps.mobileweb.MylapsConf
 //import org.junit.Assert
 
 object TestTrackParser {
@@ -9,7 +10,7 @@ object TestTrackParser {
   def main(args : Array[String]) {
     val so = Source.fromFile("test/my/laps/mobile/track-data-prca.txt")
     
-    val parser = new TrackStatusParser(so)
+    val parser = new TrackStatusParser(so, new MylapsConf())
     println(parser.tid)
     println(parser.trackName)
     val r = parser.parseTrackPracticeDay

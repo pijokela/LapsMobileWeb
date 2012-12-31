@@ -1,26 +1,21 @@
-package my.laps.mobile
+package my.laps.mobileweb
 
-import scala.io.Source
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.text.DateFormat
-import java.text.DateFormat
-import java.util.Date
-import java.text.DateFormat
-import java.text.ParseException
-import java.util.Date
-import java.util.Date
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.text.SimpleDateFormat
+import java.text.DateFormat
+import java.text.ParseException
+import my.laps.mobile.Lap
 
-object App {
-  def main(args : Array[String]) {
-    val s = Source.fromURL("http://www.mylaps.com/practice/showTrack.jsp?tid=1429")
-    println(s.getLines.mkString("\n"))
-  }
+/**
+ * Configuration that makes reading the mylaps website easier.
+ */
+class MylapsConf {
   
-  def mylapsDateParser() : DateParser = new DateParser
+  private def mylapsDateParser() : DateParser = new DateParser
+  
+  def parseDate(str : String) = mylapsDateParser.parse(str)
   
   def parseHoursMins(time : String) : (Int, Int) = {
     val parts = time.split(":").map(_.toInt)
@@ -42,19 +37,32 @@ object App {
       cal.set(Calendar.SECOND, hoursAndMins(2))
     cal.getTime
   }
+}
+
+/**
+ * Configuration options that have been chosen by the user.
+ */
+class UserConf {
   
-  def formatDate(date : Date, locale : Locale) : String = {
+  lazy val locale = new Locale("fi", "FI")
+  
+  def formatDate(date : Date) : String = {
     val f = new SimpleDateFormat("yyyy-MM-dd", locale)
     f.format(date)
   }
   
-  def formatTime(date : Date, locale : Locale) : String = {
+  def formatTime(date : Date) : String = {
     val f = new SimpleDateFormat("HH:mm:ss", locale)
     f.format(date)
   }
   
+  def lapDuration(lap : Lap) : String = "" + lap.durationMs + " ms"
+  def lapDuration(durationMs : Double) : String = "" + durationMs.asInstanceOf[Long] + " ms"
 }
 
+/**
+ * Parse any date found from the practice website.
+ */
 class DateParser {
   private val formats = List(
     new SimpleDateFormat("dd MMM, yyyy", Locale.US),

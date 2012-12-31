@@ -7,12 +7,13 @@ import java.util.Date
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Calendar
+import my.laps.mobileweb.MylapsConf
 
 /**
  * The parameter should be the page from this URL:
  * http://www.mylaps.com/practice/showTrack.jsp?tid=1429
  */
-class TrackStatusParser(source : Source) {
+class TrackStatusParser(source : Source, conf : MylapsConf) {
   
   val lines = source.getLines.toList
   
@@ -165,14 +166,12 @@ class TrackStatusParser(source : Source) {
     result._2
   }
   
-  private[this] val sessionDateFormat = App.mylapsDateParser
-  
   private def parsePracticeSessionTr(prev : (Date, List[PracticeSessionListItem]), node : Node) = {
     val cellSeq = node \ "td"
     if (cellSeq.size == 1) {
-      (sessionDateFormat.parse(cellSeq.head.text), prev._2)
+      (conf.parseDate(cellSeq.head.text), prev._2)
     } else {
-      val date = App.dateWithTime(prev._1, cellSeq(1).text)
+      val date = conf.dateWithTime(prev._1, cellSeq(1).text)
       val driver = parseDriver(cellSeq.head.toString)
       (prev._1, PracticeSessionListItem(driver, date, cellSeq(2).text.toInt) :: prev._2)
     }

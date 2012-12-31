@@ -3,8 +3,10 @@ package my.laps.mobile
 import scala.io.Source
 import java.util.Date
 import scala.xml.XML
+import my.laps.mobileweb.MylapsConf
+import my.laps.mobileweb.MylapsConf
 
-class PracticeSessionParser(track : TrackStatus, source : Source, validator : LapValidator) {
+class PracticeSessionParser(track : TrackStatus, source : Source, validator : LapValidator, conf : MylapsConf) {
 
   val lines = source.getLines.toList
   
@@ -45,12 +47,11 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
   
   /** <span class="hide">Results of 29 Dec 2012</span> */
   private val dateRegex = "<span class=\"hide\">Results of ([0-9A-Za-z ]+)</span>".r
-  private[this] val sessionDateFormat = App.mylapsDateParser
   
   lazy val parseDate = {
     val dateLine = lines.find(l=>dateRegex.findFirstIn(l).isDefined).getOrElse(throw new IllegalArgumentException("Could not find date from web page."))
     val m = dateRegex.findFirstMatchIn(dateLine).get
-    sessionDateFormat.parse(m.group(1))
+    conf.parseDate(m.group(1))
   }
   
   /** <table class="mylaps practice" cellspacing="0" summary="Practice lap times"> */
@@ -75,7 +76,7 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
   def parseSessionStartDate(lines : List[String]) = {
     val dateLine = lines.find(l=>sessionStartDateRegex.findFirstIn(l).isDefined).getOrElse(throw new IllegalArgumentException("Could not find start date from session."))
     val m = sessionStartDateRegex.findFirstMatchIn(dateLine).get
-    App.dateWithTime(parseDate, m.group(1))
+    conf.dateWithTime(parseDate, m.group(1))
   }
   
   private val lapTimeRegex = "<td class=\"time .*?\">(\\d+\\.\\d+)</td>".r
