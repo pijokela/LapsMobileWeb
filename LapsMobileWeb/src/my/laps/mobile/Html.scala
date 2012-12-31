@@ -3,6 +3,8 @@ package my.laps.mobile
 import java.util.Locale
 import my.laps.mobileweb.UserConf
 import my.laps.mobileweb.UserConf
+import my.laps.mobileweb.UserConf
+import java.util.Date
 
 class Html(val conf : UserConf) {
 	val header = """<!DOCTYPE html>
@@ -22,7 +24,7 @@ class Html(val conf : UserConf) {
 	  </html>
 	  """
 	  
-	def selectTrackPage(tid : Long, validator : LapValidator) = """
+	def selectTrackPage(tid : Long, validator : LapValidator, conf : UserConf) = """
 	    <h1>Select Track</h1>
 	    Select the track to get practice results from. Use the main website to find the track id.
 	    <form method="GET">
@@ -30,13 +32,45 @@ class Html(val conf : UserConf) {
 	      <input type="submit" value="Select Track" />
 	    </form>
 	    <h1>Configure lap validation</h1>
+  	    <form method="POST">
 	    <p>Currently the shortest allowed lap is """ + validator.minMs + 
 	    " and the longest allowed laptime is " + validator.maxMs + """.</p>
-	    <form method="POST">
 	      <div>Shortest allowed laptime <input type="text" name="minMs" value=""""  + validator.minMs + """" maxlength="6" size="5" /> ms.</div>
 	      <div>Longest allowed laptime <input type="text" name="maxMs" value=""""  + validator.maxMs + """" maxlength="6" size="5" /> ms.</div>
-          <input type="submit" value="Update configuration" />
-	    </form>
+	      
+	    <h1>Configure time formats</h1>
+	    <p>Lap times are shown like """ + conf.lapDuration(Lap(19876L)) + """.</p>
+	    
+	      <div>
+            <input type="radio" name="lapTimeFormat" value="ms">19876 ms - whole numbers, milliseconds
+	        <br>
+            <input type="radio" name="lapTimeFormat" value="commas">19,876 s - seconds with comma as decimal separator
+	        <br>
+            <input type="radio" name="lapTimeFormat" value="dots">19.876 s - seconds with dot as decimal separator
+          </div>
+	    
+	    <p>Todays date is """ + conf.formatDate(new Date()) + """.</p>
+	    
+	      <div>
+            <input type="radio" name="dateFormat" value="yyyy-MM-dd">2012-12-30
+	        <br>
+            <input type="radio" name="dateFormat" value="yyyy.MM.dd">2012.12.30
+	        <br>
+            <input type="radio" name="dateFormat" value="dd.MM.yyyy">30.12.2012
+	        <br>
+            <input type="radio" name="dateFormat" value="MM/dd/yyyy">12/30/2012
+          </div>
+	    
+	    <p>Current time is """ + conf.formatTime(new Date()) + """.</p>
+
+	      <div>
+            <input type="radio" name="timeFormat" value="HH:mm:ss">14:30:43
+	        <br>
+            <input type="radio" name="timeFormat" value="HH.mm.ss">14.30.43
+          </div>
+	    <p>Click here to update all the configuration options. The radio buttons can be left empty to not select a new value.</p>
+        <input type="submit" value="Update configuration" />
+	  </form>
 	  """
 	  
 	def driverSummary(driver : Driver) = """

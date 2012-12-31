@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat
 import java.text.DateFormat
 import java.text.ParseException
 import my.laps.mobile.Lap
+import javax.servlet.http.HttpServletRequest
+import java.text.SimpleDateFormat
+import java.text.SimpleDateFormat
 
 /**
  * Configuration that makes reading the mylaps website easier.
@@ -42,22 +45,49 @@ class MylapsConf {
 /**
  * Configuration options that have been chosen by the user.
  */
-class UserConf {
-  
-  lazy val locale = new Locale("fi", "FI")
+class UserConf(val locale : Locale, 
+               dateFormat : DateFormat, 
+               timeFormat : DateFormat, 
+               val formatLap : (Long,Locale)=>String) 
+{
   
   def formatDate(date : Date) : String = {
-    val f = new SimpleDateFormat("yyyy-MM-dd", locale)
-    f.format(date)
+    dateFormat.format(date)
   }
   
   def formatTime(date : Date) : String = {
-    val f = new SimpleDateFormat("HH:mm:ss", locale)
-    f.format(date)
+    timeFormat.format(date)
   }
   
-  def lapDuration(lap : Lap) : String = "" + lap.durationMs + " ms"
-  def lapDuration(durationMs : Double) : String = "" + durationMs.asInstanceOf[Long] + " ms"
+  def lapDuration(lap : Lap) : String = formatLap(lap.durationMs, locale)
+  def lapDuration(durationMs : Double) : String = formatLap(durationMs.asInstanceOf[Long], locale)
+}
+
+object UserConf extends HttpServletRequestParsing {
+  
+  val lapTimeFn : Map[String, (Long, Locale)=>String] = 
+    Map(
+      "ms" -> ((ms:Long, l:Locale)=>"" + ms + " ms"),
+      "commas" -> ((ms:Long, l:Locale)=>String.format(l,"%.3f s", java.lang.Double.valueOf(ms/1000.0)).replaceAll("\\.", ",")),
+      "dots" -> ((ms:Long, l:Locale)=>String.format(l,"%.3f s", java.lang.Double.valueOf(ms/1000.0)).replaceAll(",", "."))
+    )
+  
+  def createLocale(mime : String) = {
+    val parts = mime.split("-")
+    new Locale(parts(0), parts(1))
+  }
+
+  def parseFromRequest(req : HttpServletRequest) : UserConf = {
+    val localeValue = cookieValueOption("locale", req).getOrElse("fi-FI")
+    val timeFormatValue = cookieValueOption("timeFormat", req).getOrElse("HH:mm:ss")
+    val dateFormatValue = cookieValueOption("dateFormat", req).getOrElse("yyyy-MM-dd")
+    val lapTimeFormatValue = cookieValueOption("lapTimeFormat", req).getOrElse("commas")
+    new UserConf(createLocale(localeValue), 
+        new SimpleDateFormat(dateFormatValue), 
+        new SimpleDateFormat(timeFormatValue),
+        lapTimeFn(lapTimeFormatValue)
+    )
+  }
 }
 
 /**
