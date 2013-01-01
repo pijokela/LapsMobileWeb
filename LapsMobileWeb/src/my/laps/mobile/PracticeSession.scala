@@ -8,7 +8,26 @@ case class Driver(transponder : Transponder, name : String)
 
 case class PracticeSessionListItem(driver : Driver, date : Date, passings : Int)
 
-case class Lap(durationMs : Long)
+case class Lap(durationMs : Long) {
+  def fasterThan(other : Lap) = durationMs - other.durationMs <= 0
+}
+
+case class LapWithData(lap : Lap, previous : Lap, error : Option[String], bestValid : Lap, worstValid : Lap) {
+  def fasterThanPrevious() = lap.fasterThan(previous)
+  
+  /**
+   * Scales the length of this lap compared to other laps. The best lap gets
+   * min and the worst gets max and the rest of the laps are in between.
+   */
+  def scaledLength(min : Int, max : Int) = {
+    def best = bestValid.durationMs.toDouble
+    def worst = worstValid.durationMs.toDouble
+    def length = lap.durationMs.toDouble
+   
+    val scaled = (length - best) / (worst - best)
+    (scaled * (max - min)) + min
+  }
+}
 
 case class PracticeSession(startDate : Date, laps : List[Lap], validator : LapValidator) {
   private def sortLapsAndTakeHead(lapsList : List[Lap], comp : (Lap,Lap)=>Boolean) = {
@@ -16,7 +35,10 @@ case class PracticeSession(startDate : Date, laps : List[Lap], validator : LapVa
   }
   
   lazy val validLaps = laps.filter(validator.isValid(_))
-  lazy val lapsWithErrors = laps.map(l=>(l, validator.errorMessage(l)))
+  def lapsWithErrors = laps.map(l=>(l, validator.errorMessage(l)))
+  lazy val lapsWithData = 	
+//    lapsWithErrors.map(p=>LapWithData(p._1, Lap(11000), p._2, bestLapFromValidLaps, worstLapFromValidLaps))
+	  lapsWithErrors.zip(worstLapFromAllLaps :: laps).map(p=>LapWithData(p._1._1, p._2, p._1._2, bestLapFromValidLaps, worstLapFromValidLaps))
   
   lazy val averageMsAllLaps = laps.map(_.durationMs).sum / laps.size.asInstanceOf[Double]
   lazy val bestLapFromAllLaps = sortLapsAndTakeHead(laps, _.durationMs < _.durationMs)

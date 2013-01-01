@@ -93,10 +93,11 @@ class Html(val conf : UserConf) {
 	    <h1>Latest results</h1>
 	""" + day.sessionsNewestFirst.map(practiceSessionSummary(day.track.tid, _)).mkString("\n")
 	
-	def sessionLap(lap : Lap, error : Option[String]) : String = 
-	  error match {
-	    case Some(e) => """<li class="invalid">""" + conf.lapDuration(lap) + " - " + e + "</li>\n"
-	    case None => """<li class="valid">""" + conf.lapDuration(lap) + "</li>\n"
+	def sessionLap(lap : LapWithData) : String = 
+	  (lap.fasterThanPrevious, lap.error) match {
+	    case (_, Some(e)) => """<li class="invalid lap">""" + conf.lapDuration(lap.lap) + " - " + e + "</li>\n"
+	    case (true, None) => """<li class="valid lap faster" style="border-right-width: """ + lap.scaledLength(4,10) + """em;">""" + conf.lapDuration(lap.lap) + "</li>\n"
+	    case (false, None) => """<li class="valid lap slower" style="border-right-width: """ + lap.scaledLength(4,10) + """em;">""" + conf.lapDuration(lap.lap) + "</li>\n"
 	  }
 	
 	def sessionLapSection(session : PracticeSession) = 
@@ -114,7 +115,7 @@ class Html(val conf : UserConf) {
 	  "</ul>" + 
 	  """<h2>Session laps</h2>
 	  <div class="hiddenLapList"><span class="showButton">... show ...</span>
-	  <ol>""" + session.lapsWithErrors.map(pair=>sessionLap(pair._1, pair._2)).mkString("\n") + """</ol></div>"""
+	  <ol>""" + session.lapsWithData.map(sessionLap(_)).mkString("\n") + """</ol></div>"""
 	
 	def transponderSessions(practiceSessionDay : PracticeSessionDay) = trackSummary(practiceSessionDay.track) + """
 	    <h2>Results from """ + conf.formatDate(practiceSessionDay.date) + """</h2>

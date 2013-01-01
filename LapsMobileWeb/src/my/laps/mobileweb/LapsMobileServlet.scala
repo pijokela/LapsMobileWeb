@@ -77,7 +77,7 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
 }
 
 trait HttpServletRequestParsing {
-    def paramOption(name : String, req : HttpServletRequest) : Option[String] = 
+  def paramOption(name : String, req : HttpServletRequest) : Option[String] = 
     if (req.getParameter(name) == null) None else Some(req.getParameter(name))
   
   def longParamOption(name : String, req : HttpServletRequest) : Option[Long] = 
@@ -103,6 +103,9 @@ trait HttpServletRequestParsing {
   def putTidToCookie(tid : Long, resp : HttpServletResponse) = 
 	resp.addCookie(new Cookie("tid", tid.toString))
 	
-  def putCookie(name : String, value : String, resp : HttpServletResponse) = 
-	resp.addCookie(new Cookie(name, value))
+  def putCookie(name : String, value : String, resp : HttpServletResponse) = {
+    val cookie = new Cookie(name, value)
+    cookie.setMaxAge(3600*24*365)
+    resp.addCookie(cookie)
+  }
 }
