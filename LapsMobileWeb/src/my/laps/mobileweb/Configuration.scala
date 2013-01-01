@@ -61,6 +61,13 @@ class UserConf(val locale : Locale,
   
   def lapDuration(lap : Lap) : String = formatLap(lap.durationMs, locale)
   def lapDuration(durationMs : Double) : String = formatLap(durationMs.asInstanceOf[Long], locale)
+  
+  def toParams = "locale=" + locale.getLanguage() + "-" + locale.getCountry() + "&timeFormat=HH:mm:ss&dateFormat=yyyy-MM-dd&lapTimeFormat=commas"
+  
+  /**
+   * Use the users locale to decide if this date is today:
+   */
+  def isToday(date : Date) = formatDate(date) == formatDate(new Date())
 }
 
 object UserConf extends HttpServletRequestParsing {
@@ -77,11 +84,23 @@ object UserConf extends HttpServletRequestParsing {
     new Locale(parts(0), parts(1))
   }
 
-  def parseFromRequest(req : HttpServletRequest) : UserConf = {
+  def parseFromCookies(req : HttpServletRequest) : UserConf = {
     val localeValue = cookieValueOption("locale", req).getOrElse("fi-FI")
     val timeFormatValue = cookieValueOption("timeFormat", req).getOrElse("HH:mm:ss")
     val dateFormatValue = cookieValueOption("dateFormat", req).getOrElse("yyyy-MM-dd")
     val lapTimeFormatValue = cookieValueOption("lapTimeFormat", req).getOrElse("commas")
+    new UserConf(createLocale(localeValue), 
+        new SimpleDateFormat(dateFormatValue), 
+        new SimpleDateFormat(timeFormatValue),
+        lapTimeFn(lapTimeFormatValue)
+    )
+  }
+  
+  def parseFromParams(req : HttpServletRequest) : UserConf = {
+    val localeValue = paramValueOption("locale", req).getOrElse("fi-FI")
+    val timeFormatValue = paramValueOption("timeFormat", req).getOrElse("HH:mm:ss")
+    val dateFormatValue = paramValueOption("dateFormat", req).getOrElse("yyyy-MM-dd")
+    val lapTimeFormatValue = paramValueOption("lapTimeFormat", req).getOrElse("commas")
     new UserConf(createLocale(localeValue), 
         new SimpleDateFormat(dateFormatValue), 
         new SimpleDateFormat(timeFormatValue),

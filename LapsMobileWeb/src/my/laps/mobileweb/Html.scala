@@ -1,10 +1,16 @@
-package my.laps.mobile
+package my.laps.mobileweb
 
-import java.util.Locale
-import my.laps.mobileweb.UserConf
-import my.laps.mobileweb.UserConf
-import my.laps.mobileweb.UserConf
 import java.util.Date
+
+import my.laps.mobile.Driver
+import my.laps.mobile.Lap
+import my.laps.mobile.LapValidator
+import my.laps.mobile.LapWithData
+import my.laps.mobile.PracticeSession
+import my.laps.mobile.PracticeSessionDay
+import my.laps.mobile.PracticeSessionListItem
+import my.laps.mobile.TrackPracticeDay
+import my.laps.mobile.TrackStatus
 
 class Html(val conf : UserConf) {
 	val header = """<!DOCTYPE html>
@@ -79,6 +85,7 @@ class Html(val conf : UserConf) {
 	  
 	def trackSummary(track : TrackStatus) = """
 	    <h1><a href="?tid=""" + track.tid + """">""" + track.name + """</a></h1>
+	    <div><a href="http://www.mylaps.com/practice/showTrack.jsp?tid=""" + track.tid + """">Mylaps website</a></div>
 	    <div>Length: """ + track.length.value + " " + track.length.unit + """</div>
 	    <div>Location: """ + track.location + """</div>
 	    <div>Online: """ + (if (track.online) "Track is online!" else "No") + """</div>
@@ -86,18 +93,24 @@ class Html(val conf : UserConf) {
 	  
 	def practiceSessionSummary(tid : Long, sessionListItem : PracticeSessionListItem) = """
 	  <div><a href="?tid=""" + tid + "&transponder=" + sessionListItem.driver.transponder.number + """">""" + 
-	  sessionListItem.driver.name + """</a> from """ + conf.formatDate(sessionListItem.date) + """</div>
+	  sessionListItem.driver.name + "</a> did " + sessionListItem.passings + " passings on " + conf.formatDate(sessionListItem.date) + """.</div>
 	  """
 	  
-	def trackTrainingDay(day : TrackPracticeDay) = trackSummary(day.track) + """
-	    <h1>Latest results</h1>
-	""" + day.sessionsNewestFirst.map(practiceSessionSummary(day.track.tid, _)).mkString("\n")
-	
+	def trackTrainingDay(day : TrackPracticeDay) = {
+	  val (today, older) = day.sessionsNewestFirst.span(s=>conf.isToday(s.date))
+	  
+  	  trackSummary(day.track) + """
+	    <h2>Todays results</h2>
+	  """ + today.map(practiceSessionSummary(day.track.tid, _)).mkString("\n") + """
+	    <h2>Older results</h2>
+	  """ + older.map(practiceSessionSummary(day.track.tid, _)).mkString("\n") + """
+	  <a href="/rss?tid=""" + day.track.tid + "&" + conf.toParams + """"><img class="rss-icon" src="/rss.png"></img></a>"""
+	}
 	def sessionLap(lap : LapWithData) : String = 
 	  (lap.fasterThanPrevious, lap.error) match {
 	    case (_, Some(e)) => """<li class="invalid lap">""" + conf.lapDuration(lap.lap) + " - " + e + "</li>\n"
-	    case (true, None) => """<li class="valid lap faster" style="border-right-width: """ + lap.scaledLength(4,10) + """em;">""" + conf.lapDuration(lap.lap) + "</li>\n"
-	    case (false, None) => """<li class="valid lap slower" style="border-right-width: """ + lap.scaledLength(4,10) + """em;">""" + conf.lapDuration(lap.lap) + "</li>\n"
+	    case (true, None) => """<li class="valid lap faster" style="border-right-width: """ + lap.scaledLength(0,10) + """em;">""" + conf.lapDuration(lap.lap) + "</li>\n"
+	    case (false, None) => """<li class="valid lap slower" style="border-right-width: """ + lap.scaledLength(0,10) + """em;">""" + conf.lapDuration(lap.lap) + "</li>\n"
 	  }
 	
 	def sessionLapSection(session : PracticeSession) = 

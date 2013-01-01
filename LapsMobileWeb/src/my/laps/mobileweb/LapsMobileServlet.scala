@@ -1,16 +1,11 @@
 package my.laps.mobileweb
 
-import javax.servlet.http.HttpServlet
-import java.io.IOException
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.Cookie
-import my.laps.mobile.LapValidator
-import my.laps.mobile.Html
-import java.util.Locale
-import my.laps.mobile.PracticeWebsiteDao
-import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import my.laps.mobile.LapValidator
+import my.laps.mobile.PracticeWebsiteDao
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
@@ -41,8 +36,8 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
       }).getOrElse(new LapValidator(5000, 25000))
 
   override def doGet(req : HttpServletRequest, resp : HttpServletResponse) = {
-    val validator = getValidator(req)
-    val conf = UserConf.parseFromRequest(req)
+    val validator = LapValidator.createFromCookie(req)
+    val conf = UserConf.parseFromCookies(req)
 	val html = new Html(conf)
 	val dao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
     
@@ -96,6 +91,12 @@ trait HttpServletRequestParsing {
   
   def cookieValueOption(name : String, req : HttpServletRequest) : Option[String] = 
     cookieOption(name, req).map(_.getValue)
+  
+  def paramValueOption(name : String, req : HttpServletRequest) : Option[String] =
+    req.getParameter(name) match {
+      case null => None
+      case v => Some(v)
+    }
   
   def getTidFromCookie(req : HttpServletRequest) =
     cookieOption("tid", req).map(_.getValue().toLong).getOrElse(1429L)

@@ -1,5 +1,8 @@
 package my.laps.mobile
 
+import my.laps.mobileweb.HttpServletRequestParsing
+import javax.servlet.http.HttpServletRequest
+
 class LapValidator(val minMs : Long, val maxMs : Long) {
   val tests = List(
       (lap:Lap)=>if (lap.durationMs < minMs) Some("Lap was below minimum duration of " + minMs + " ms.") else None,
@@ -12,4 +15,24 @@ class LapValidator(val minMs : Long, val maxMs : Long) {
    */
   def errorMessage(lap : Lap) : Option[String] = 
     tests.map(_(lap)).filter(_ != None).map(_.get).headOption
+}
+
+object LapValidator extends HttpServletRequestParsing {
+  def createFromCookie(req : HttpServletRequest) : LapValidator = 
+    cookieOption("minMs-maxMs", req).map(
+      cookie=>{
+        val parts = cookie.getValue().split("-")
+		val minMs = parts(0).toLong
+		val maxMs = parts(1).toLong
+		new LapValidator(minMs, maxMs)
+      }).getOrElse(new LapValidator(5000, 25000))
+      
+  def createFromParam(req : HttpServletRequest) : LapValidator = 
+    paramValueOption("minMs-maxMs", req).map(
+      value=>{
+        val parts = value.split("-")
+		val minMs = parts(0).toLong
+		val maxMs = parts(1).toLong
+		new LapValidator(minMs, maxMs)
+      }).getOrElse(new LapValidator(5000, 25000))
 }
