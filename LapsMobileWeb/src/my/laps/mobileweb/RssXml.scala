@@ -7,7 +7,7 @@ import my.laps.mobile.TrackPracticeDay
 class RssXml(val conf : UserConf) {
   def trackActivityRss(day : TrackPracticeDay) : Elem = {
     val track = day.track
-    val items = for(session <- day.practiceSessions) yield {
+    val items = for(session <- day.sessionsNewestFirst.reverse) yield {
         <item>
           <title>{conf.formatDate(session.date) + " " + session.driver.name + " (" + session.driver.transponder.number + ")"}</title>
           <link>http://m-laps.appspot.com/app?tid={track.tid}&amp;transponder={session.driver.transponder.number}</link>
@@ -15,6 +15,7 @@ class RssXml(val conf : UserConf) {
             <h2>{session.driver.name}</h2>
             <p>Practice session at {track.name} during {conf.formatDate(session.date)}. Total of {session.passings} passings.</p>
           </description>
+          <guid>trackActivityRss_{session.date.getTime}_{session.driver.transponder.number}</guid>
         </item>
     }
     
