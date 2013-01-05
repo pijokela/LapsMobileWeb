@@ -6,9 +6,17 @@ import my.laps.mobile.TrackPracticeDay
 import scala.xml.Attribute
 import scala.xml.Text
 import scala.xml.Null
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.text.DateFormatSymbols
 
 class RssXml(val conf : UserConf) {
   def trackActivityRss(day : TrackPracticeDay) : Elem = {
+    
+    // Sat, 5 Jan 2013 14:12:41 +0200
+    val pubDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", UserConf.FI)
+    pubDateFormat.setDateFormatSymbols(DateFormatSymbols.getInstance(Locale.US))
+    
     val track = day.track
     val items = for(session <- day.sessionsNewestFirst.take(10)) yield {
         <item>
@@ -18,6 +26,7 @@ class RssXml(val conf : UserConf) {
             {session.driver.name}
             Practice session at {track.name} during {conf.formatDate(session.date)}. Total of {session.passings} passings.
           </description>
+          <pubDate>{pubDateFormat.format(session.date)}</pubDate>
           <guid isPermaLink="false">trackActivityRss_{session.date.getTime}_{session.driver.transponder.number}</guid>
         </item>
     }

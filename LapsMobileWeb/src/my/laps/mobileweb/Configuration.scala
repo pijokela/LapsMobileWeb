@@ -10,6 +10,8 @@ import my.laps.mobile.Lap
 import javax.servlet.http.HttpServletRequest
 import java.text.SimpleDateFormat
 import java.text.SimpleDateFormat
+import java.text.DateFormatSymbols
+import java.util.TimeZone
 
 /**
  * Configuration that makes reading the mylaps website easier.
@@ -31,13 +33,17 @@ class MylapsConf {
   }
 
   def dateWithTime(date : Date, time : String) = {
-    val cal = Calendar.getInstance()
+    val cal = Calendar.getInstance(UserConf.FI)
+    cal.setTimeZone(TimeZone.getTimeZone("Europe/Helsinki"));
     cal.setTime(date)
     val hoursAndMins = time.split(":").map(_.toInt)
     cal.set(Calendar.HOUR_OF_DAY, hoursAndMins(0))
     cal.set(Calendar.MINUTE, hoursAndMins(1))
     if (hoursAndMins.size > 2)
       cal.set(Calendar.SECOND, hoursAndMins(2))
+      
+    println("Time: " + time + " parsed to Date object: " + cal.getTime + " on date: " + date)
+      
     cal.getTime
   }
 }
@@ -71,6 +77,8 @@ class UserConf(val locale : Locale,
 }
 
 object UserConf extends HttpServletRequestParsing {
+  
+  val FI = new Locale("fi", "FI")
   
   val lapTimeFn : Map[String, (Long, Locale)=>String] = 
     Map(
@@ -113,9 +121,16 @@ object UserConf extends HttpServletRequestParsing {
  * Parse any date found from the practice website.
  */
 class DateParser {
+  
+  private def createFormat(pattern : String) : SimpleDateFormat = {
+    val sdf = new SimpleDateFormat(pattern, UserConf.FI)
+    sdf.setDateFormatSymbols(DateFormatSymbols.getInstance(Locale.US))
+    sdf
+  }
+  
   private val formats = List(
-    new SimpleDateFormat("dd MMM, yyyy", Locale.US),
-    new SimpleDateFormat("dd MMM yyyy", Locale.US)
+    createFormat("dd MMM, yyyy"),
+    createFormat("dd MMM yyyy")
   )
 
   def parse(string : String) : Date = {
