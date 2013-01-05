@@ -41,6 +41,7 @@ class RssXml(val conf : UserConf) {
         <description>This feed lists all practice sessions from {track.name} at 
         {track.location}. Please see website for more details about the sessions.
         </description>
+        <image><title>M-Laps</title><url>http://m-laps.appspot.com/logo.png</url><link>http://m-laps.appspot.com/</link></image>
         {atomLink}
         {items}
       </channel>

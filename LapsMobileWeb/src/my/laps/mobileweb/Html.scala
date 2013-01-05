@@ -18,13 +18,14 @@ class Html(val conf : UserConf) {
 	    <head>
 	      <title>My Laps Mobile</title>
 	      <link rel="stylesheet" href="style.css" />
+	      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	    </head>
 	    <body>
 	  """
 	  
 	val footer = """
-	    <h1><a href="?">Change track</a></h1>
+	    <h1><a href="/"><img src="/logo60.png" class="icon" alt="Front page" title="Front page"></img></a> <a href="?">Change track</a></h1>
         <script src="scripts.js"></script>
 	    </body>
 	  </html>
@@ -104,7 +105,7 @@ class Html(val conf : UserConf) {
 	  """ + today.map(practiceSessionSummary(day.track.tid, _)).mkString("\n") + """
 	    <h2>Older results</h2>
 	  """ + older.map(practiceSessionSummary(day.track.tid, _)).mkString("\n") + """
-	  <a href="/rss?tid=""" + day.track.tid + "&" + conf.toParams + """"><img class="rss-icon" src="/rss.png"></img></a>"""
+	  <a href="/rss?tid=""" + day.track.tid + "&" + conf.toParams + """"><img class="rss-icon icon" src="/rss.png"></img></a>"""
 	}
 	def sessionLap(lap : LapWithData) : String = 
 	  (lap.fasterThanPrevious, lap.error) match {
