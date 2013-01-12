@@ -92,19 +92,21 @@ class Html(val conf : UserConf) {
 	    <div>Online: """ + (if (track.online) "Track is online!" else "No") + """</div>
 	  """
 	  
-	def practiceSessionSummary(tid : Long, sessionListItem : PracticeSessionListItem) = """
-	  <div><a href="?tid=""" + tid + "&transponder=" + sessionListItem.driver.transponder.number + """">""" + 
-	  sessionListItem.driver.name + "</a> did " + sessionListItem.passings + " passings on " + conf.formatDate(sessionListItem.date) + """.</div>
-	  """
+	def practiceSessionSummary(tid : Long, sessionListItem : PracticeSessionListItem, withTime : Boolean) = """
+	  <div>""" + 
+	  (if (withTime) conf.formatTime(sessionListItem.date) else conf.formatDate(sessionListItem.date)) + 
+	  """: <a href="?tid=""" + tid + "&transponder=" + sessionListItem.driver.transponder.number + """">""" + 
+	  sessionListItem.driver.name + "</a> did " + sessionListItem.passings + 
+	  " passings.</div>"
 	  
 	def trackTrainingDay(day : TrackPracticeDay) = {
 	  val (today, older) = day.sessionsNewestFirst.span(s=>conf.isToday(s.date))
 	  
   	  trackSummary(day.track) + """
 	    <h2>Todays results</h2>
-	  """ + today.map(practiceSessionSummary(day.track.tid, _)).mkString("\n") + """
+	  """ + today.map(practiceSessionSummary(day.track.tid, _, true)).mkString("\n") + """
 	    <h2>Older results</h2>
-	  """ + older.map(practiceSessionSummary(day.track.tid, _)).mkString("\n") + """
+	  """ + older.map(practiceSessionSummary(day.track.tid, _, false)).mkString("\n") + """
 	  <a href="/rss?tid=""" + day.track.tid + "&" + conf.toParams + """"><img class="rss-icon icon" src="/rss.png"></img></a>"""
 	}
 	def sessionLap(lap : LapWithData) : String = 

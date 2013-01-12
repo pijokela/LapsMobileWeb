@@ -34,7 +34,7 @@ class MylapsConf {
 
   def dateWithTime(date : Date, time : String) = {
     val cal = Calendar.getInstance(UserConf.FI)
-    cal.setTimeZone(TimeZone.getTimeZone("Europe/Helsinki"));
+    cal.setTimeZone(UserConf.TimeZoneFI);
     cal.setTime(date)
     val hoursAndMins = time.split(":").map(_.toInt)
     cal.set(Calendar.HOUR_OF_DAY, hoursAndMins(0))
@@ -79,6 +79,7 @@ class UserConf(val locale : Locale,
 object UserConf extends HttpServletRequestParsing {
   
   val FI = new Locale("fi", "FI")
+  val TimeZoneFI = TimeZone.getTimeZone("Europe/Helsinki")
   
   val lapTimeFn : Map[String, (Long, Locale)=>String] = 
     Map(
@@ -92,28 +93,35 @@ object UserConf extends HttpServletRequestParsing {
     new Locale(parts(0), parts(1))
   }
 
-  def parseFromCookies(req : HttpServletRequest) : UserConf = {
-    val localeValue = cookieValueOption("locale", req).getOrElse("fi-FI")
-    val timeFormatValue = cookieValueOption("timeFormat", req).getOrElse("HH:mm:ss")
-    val dateFormatValue = cookieValueOption("dateFormat", req).getOrElse("yyyy-MM-dd")
-    val lapTimeFormatValue = cookieValueOption("lapTimeFormat", req).getOrElse("commas")
+  def parseFromCookies(req : HttpServletRequest) : UserConf = 
+    parseWithFunction(cookieValueOption(_, req))
+  
+  def parseFromParams(req : HttpServletRequest) : UserConf = 
+    parseWithFunction(paramValueOption(_, req))
+  
+  def createWithDefaults() : UserConf = 
+    parseWithFunction((s)=>None)
+    
+  def parseWithFunction(get : (String)=>Option[String]) : UserConf = {
+    val localeValue = get("locale").getOrElse("fi-FI")
+    val timeFormatValue = get("timeFormat").getOrElse("HH:mm:ss")
+    val dateFormatValue = get("dateFormat").getOrElse("yyyy-MM-dd")
+    val lapTimeFormatValue = get("lapTimeFormat").getOrElse("commas")
+    val tz = UserConf.TimeZoneFI
     new UserConf(createLocale(localeValue), 
-        new SimpleDateFormat(dateFormatValue), 
-        new SimpleDateFormat(timeFormatValue),
+        DateParser.createFormat(dateFormatValue), 
+        DateParser.createFormat(timeFormatValue),
         lapTimeFn(lapTimeFormatValue)
     )
   }
-  
-  def parseFromParams(req : HttpServletRequest) : UserConf = {
-    val localeValue = paramValueOption("locale", req).getOrElse("fi-FI")
-    val timeFormatValue = paramValueOption("timeFormat", req).getOrElse("HH:mm:ss")
-    val dateFormatValue = paramValueOption("dateFormat", req).getOrElse("yyyy-MM-dd")
-    val lapTimeFormatValue = paramValueOption("lapTimeFormat", req).getOrElse("commas")
-    new UserConf(createLocale(localeValue), 
-        new SimpleDateFormat(dateFormatValue), 
-        new SimpleDateFormat(timeFormatValue),
-        lapTimeFn(lapTimeFormatValue)
-    )
+}
+
+object DateParser {
+  def createFormat(pattern : String) : SimpleDateFormat = {
+    val sdf = new SimpleDateFormat(pattern, UserConf.FI)
+    sdf.setDateFormatSymbols(DateFormatSymbols.getInstance(Locale.US))
+    sdf.setTimeZone(UserConf.TimeZoneFI)
+    sdf
   }
 }
 
@@ -122,15 +130,9 @@ object UserConf extends HttpServletRequestParsing {
  */
 class DateParser {
   
-  private def createFormat(pattern : String) : SimpleDateFormat = {
-    val sdf = new SimpleDateFormat(pattern, UserConf.FI)
-    sdf.setDateFormatSymbols(DateFormatSymbols.getInstance(Locale.US))
-    sdf
-  }
-  
   private val formats = List(
-    createFormat("dd MMM, yyyy"),
-    createFormat("dd MMM yyyy")
+    DateParser.createFormat("dd MMM, yyyy"),
+    DateParser.createFormat("dd MMM yyyy")
   )
 
   def parse(string : String) : Date = {
