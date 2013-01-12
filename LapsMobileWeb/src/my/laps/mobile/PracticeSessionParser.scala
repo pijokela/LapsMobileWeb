@@ -37,7 +37,7 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
   }
   
   /** <span class="hide">Laptimes for Miko Teponoja</span> */
-  private val nameRegex = "<span class=\"hide\">Laptimes for ([0-9A-Za-z ]+)</span>".r
+  val nameRegex = "<span class=\"hide\">Laptimes for ((?:\\p{L}|\\s|\\d)+)</span>".r
 
   lazy val parseDriverName = {
     val nameLine = lines.find(l=>nameRegex.findFirstIn(l).isDefined).getOrElse(throw new IllegalArgumentException("Could not find driver name from web page."))
