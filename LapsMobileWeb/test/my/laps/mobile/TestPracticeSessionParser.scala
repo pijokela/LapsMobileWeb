@@ -8,14 +8,22 @@ import org.junit.Assert
 
 class Utf8DriverName {
   val so = Source.fromFile("test/my/laps/mobile/utf8-driver-name.txt")
+  val parser = new DriverNameParser()
   
   @Test
   def driverFoundFromLine() {
     val line = """	<h1><img src="http://www.mylaps.com/textimage/headerDark/h1/Laptimes%2Bfor%2BPetri%2BNiemel%25C3%25A4.gif" alt="Laptimes for Petri Niemelä"/><span class="hide">Laptimes for Petri Niemelä</span></h1>"""
-    val nameRegex = "<span class=\"hide\">Laptimes for ((?:\\p{L}|\\s|\\d)+)</span>".r
-    val m = nameRegex.findFirstMatchIn(line)
+    val m = parser.parse(line)
     Assert.assertTrue(m != None)
-    Assert.assertEquals("Petri Niemelä", m.get.group(1))
+    Assert.assertEquals("Petri Niemelä", m.get)
+  }
+  
+  @Test
+  def driverFoundFromLineWithDots() {
+    val line = """	<h1><img src="http://www.mylaps.com/textimage/headerDark/h1/Laptimes%2Bfor%2BPetri%2BNiemel%25C3%25A4.gif" alt="Laptimes for Petri Niemelä"/><span class="hide">Laptimes for N.O.X.</span></h1>"""
+    val m = parser.parse(line)
+    Assert.assertTrue(m != None)
+    Assert.assertEquals("N.O.X.", m.get)
   }
   
   @Test

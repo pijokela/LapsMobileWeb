@@ -6,6 +6,14 @@ import scala.xml.XML
 import my.laps.mobileweb.MylapsConf
 import my.laps.mobileweb.MylapsConf
 
+class DriverNameParser {
+  /** <span class="hide">Laptimes for Name of Driver</span> */
+  private val nameRegex = "<span class=\"hide\">Laptimes for ((?:\\p{L}|\\s|\\d|[\\.;:'])+)</span>".r
+  
+  def parse(line : String) = 
+    nameRegex.findFirstMatchIn(line).map(_.group(1))
+}
+
 class PracticeSessionParser(track : TrackStatus, source : Source, validator : LapValidator, conf : MylapsConf) {
 
   val lines = source.getLines.toList
@@ -36,13 +44,10 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
     Transponder(m.group(1).toLong)
   }
   
-  /** <span class="hide">Laptimes for Miko Teponoja</span> */
-  val nameRegex = "<span class=\"hide\">Laptimes for ((?:\\p{L}|\\s|\\d)+)</span>".r
-
   lazy val parseDriverName = {
-    val nameLine = lines.find(l=>nameRegex.findFirstIn(l).isDefined).getOrElse(throw new IllegalArgumentException("Could not find driver name from web page."))
-    val m = nameRegex.findFirstMatchIn(nameLine).get
-    m.group(1)
+    val parser = new DriverNameParser()
+    val nameLine = lines.find(l=>parser.parse(l).isDefined).getOrElse(throw new IllegalArgumentException("Could not find driver name from web page."))
+    parser.parse(nameLine).get
   }
   
   /** <span class="hide">Results of 29 Dec 2012</span> */
