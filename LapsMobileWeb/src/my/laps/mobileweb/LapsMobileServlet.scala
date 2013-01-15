@@ -9,6 +9,8 @@ import my.laps.mobile.PracticeWebsiteDao
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
+  
+  
   /**
    * Configuration change requests are POSTs.
    */
@@ -36,37 +38,52 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
       }).getOrElse(new LapValidator(5000, 25000))
 
   override def doGet(req : HttpServletRequest, resp : HttpServletResponse) = {
+    try {
+      doGetWithErrorHandling(req, resp)
+    }
+    catch {
+      case e : java.net.SocketTimeoutException => 
+        val out = resp.getWriter()
+        val html = new Html(UserConf.createWithDefaults) // Create default user so that creation will not fail.
+        out.println(html.header)
+        out.println(html.errorPage)
+        out.println(html.footer)
+    }
+  }
+  
+  def doGetWithErrorHandling(req : HttpServletRequest, resp : HttpServletResponse) = {
     val validator = LapValidator.createFromCookie(req)
     val conf = UserConf.parseFromCookies(req)
 	val html = new Html(conf)
 	val dao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
     
 	resp.setContentType("text/html")
-	val out = resp.getWriter()
-		
-	out.println(html.header);
     
 	val trackId = longParamOption("tid", req)
     val tp = longParamOption("transponder", req)
-    (trackId, tp) match {
+    val pageContent = (trackId, tp) match {
       case (None, None) => {
 		val tid = getTidFromCookie(req)
 		// Output track selection page:
-		out.println(html.selectTrackPage(tid, validator, conf))
+		html.selectTrackPage(tid, validator, conf)
       }
       case (Some(tid), None) => {
-		putTidToCookie(tid, resp);
+		putTidToCookie(tid, resp)
 		// Output track practice day:
-		val day = dao.getTrackPracticeDay(tid);
-		out.println(html.trackTrainingDay(day));
+		val day = dao.getTrackPracticeDay(tid)
+		html.trackTrainingDay(day)
       }
       case (Some(tid), Some(transponder)) => {
-		putTidToCookie(tid, resp);
+		putTidToCookie(tid, resp)
 		// Output transponder session list:
-		val day = dao.getTransponderSessions(tid, transponder, validator);
-		out.println(html.transponderSessions(day));
+		val day = dao.getTransponderSessions(tid, transponder, validator)
+		html.transponderSessions(day)
       }
     }
+    
+	val out = resp.getWriter()
+	out.println(html.header)
+	out.println(pageContent)
 	out.println(html.footer)
   }
 }

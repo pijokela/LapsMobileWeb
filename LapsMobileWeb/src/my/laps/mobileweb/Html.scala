@@ -31,6 +31,18 @@ class Html(val conf : UserConf) {
 	  </html>
 	  """
 	  
+	val errorPage = """
+	  <h1>Reading data from Mylaps failed, Sorry</h1>
+	  <p>
+	    Mylaps practice server did not return data fast enough. Sorry.
+	    Sometimes refreshing the page helps for this problem, but
+	    it may also be that the practice server is currently down.
+	  </p>
+	  <p>
+	    <a href="http://www.mylaps.com/practice/index.jsp">You can try using the Mylaps practice server directly</a>
+	  </p>
+	  """
+	  
 	def selectTrackPage(tid : Long, validator : LapValidator, conf : UserConf) = """
 	    <h1>Select Track</h1>
 	    Select the track to get practice results from. Use the main website to find the track id.
