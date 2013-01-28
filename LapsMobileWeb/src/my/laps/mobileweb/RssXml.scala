@@ -18,6 +18,7 @@ class RssXml(val conf : UserConf) {
     pubDateFormat.setDateFormatSymbols(DateFormatSymbols.getInstance(Locale.US))
     
     val track = day.track
+    println("Sessions for RSS: " + day.sessionsNewestFirst.size)
     val items = for(session <- day.sessionsNewestFirst.take(10)) yield {
         <item>
           <title>{conf.formatDate(session.date) + " " + session.driver.name + " (" + session.driver.transponder.number + ")"}</title>
@@ -27,7 +28,7 @@ class RssXml(val conf : UserConf) {
             Practice session at {track.name} during {conf.formatDate(session.date)}. Total of {session.passings} passings.
           </description>
           <pubDate>{pubDateFormat.format(session.date)}</pubDate>
-          <guid isPermaLink="false">trackActivityRss_{session.date.getTime}_{session.driver.transponder.number}</guid>
+          <guid isPermaLink="false">trackActivityRss_{conf.formatDate(session.date)}_{session.driver.transponder.number}</guid>
         </item>
     }
     

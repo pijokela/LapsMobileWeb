@@ -1,12 +1,22 @@
 package my.laps.mobile
 
 import java.util.Date
+import java.util.Calendar
+import java.util.TimeZone
 
 case class Transponder(number : Long)
 
 case class Driver(transponder : Transponder, name : String)
 
-case class PracticeSessionListItem(driver : Driver, date : Date, passings : Int)
+case class Day(year : Int, month : Int, day : Int) {
+  override def toString() = "" + year + "-" + month + "-" + day
+}
+
+case class PracticeSessionListItem(driver : Driver, sessionTime : Date, sessionDate : Day, passings : Int) {
+  val date = sessionTime
+  /** A transponder can only have a single session on a single day. */
+  def id = sessionDate.toString + "-" + driver.transponder.number.toString
+}
 
 case class Lap(durationMs : Long) {
   def fasterThan(other : Lap) = durationMs - other.durationMs <= 0

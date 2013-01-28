@@ -172,8 +172,9 @@ class TrackStatusParser(source : Source, conf : MylapsConf) {
       (conf.parseDate(cellSeq.head.text), prev._2)
     } else {
       val date = conf.dateWithTime(prev._1, cellSeq(1).text)
+      val day = conf.day(prev._1)
       val driver = parseDriver(cellSeq.head.toString)
-      (prev._1, PracticeSessionListItem(driver, date, cellSeq(2).text.toInt) :: prev._2)
+      (prev._1, PracticeSessionListItem(driver, date, day, cellSeq(2).text.toInt) :: prev._2)
     }
   }
   

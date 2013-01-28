@@ -5,14 +5,17 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import my.laps.mobile.LapValidator
 import my.laps.mobile.PracticeWebsiteDao
+import my.laps.mobile.datastore.PracticeDatastoreDao
 
 class RssServlet extends HttpServlet with HttpServletRequestParsing {
-  
+
+  val websiteDao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
+  val dao = new PracticeDatastoreDao(websiteDao)
+
   override def doGet(req : HttpServletRequest, resp : HttpServletResponse) = {
     val validator = LapValidator.createFromParam(req)
     val conf = UserConf.parseFromParams(req)
 	val rss = new RssXml(conf)
-	val dao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
     
 	resp.setContentType("text/xml")
 	val out = resp.getWriter()

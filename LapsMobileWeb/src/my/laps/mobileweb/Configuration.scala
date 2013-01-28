@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat
 import java.text.SimpleDateFormat
 import java.text.DateFormatSymbols
 import java.util.TimeZone
+import my.laps.mobile.Day
 
 /**
  * Configuration that makes reading the mylaps website easier.
@@ -45,6 +46,14 @@ class MylapsConf {
     println("Time: " + time + " parsed to Date object: " + cal.getTime + " on date: " + date)
       
     cal.getTime
+  }
+  
+  def day(date : Date) : Day = {
+    val cal = Calendar.getInstance(UserConf.FI)
+    cal.setTimeZone(UserConf.TimeZoneFI)
+    cal.setTime(date)
+    
+    Day(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
   }
 }
 

@@ -13,5 +13,5 @@ case class TrackStatus(
 )
 
 case class TrackPracticeDay(track : TrackStatus, practiceSessions : List[PracticeSessionListItem] = Nil) {
-  def sessionsNewestFirst() = practiceSessions.sortWith((t1, t2)=>t1.date.after(t2.date))
+  lazy val sessionsNewestFirst = practiceSessions.sortWith((t1, t2)=>t1.date.after(t2.date))
 }

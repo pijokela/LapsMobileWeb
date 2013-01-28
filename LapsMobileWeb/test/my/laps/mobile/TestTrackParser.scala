@@ -34,7 +34,7 @@ class Tamua20130112 {
   @Test
   def pirkkasTimeIs1731() {
     val r = parse()
-    val s = r.sessionsNewestFirst().find(_.driver.name == "Pirkka").get
+    val s = r.sessionsNewestFirst.find(_.driver.name == "Pirkka").get
     Assert.assertEquals("17:31:00", user.formatTime(s.date))
     val c = Calendar.getInstance()
     c.setTimeZone(UserConf.TimeZoneFI)
