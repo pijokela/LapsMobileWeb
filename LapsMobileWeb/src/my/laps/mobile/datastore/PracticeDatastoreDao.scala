@@ -71,7 +71,7 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao) {
     val query = new Query("PracticeSessionListItem", trackKey).setFilter(idIs)
     val items = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100)).toList
     
-    val entity = items.find(i=>i.dateProp("date") == item.date)
+    val entity = items.find(i=>isOnDay(i, item.sessionDate))
     entity match {
       case Some(e) => 
         datastore.put(practiceSessionListItemToEntity(tid, item, e))
@@ -90,6 +90,9 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao) {
     itemEntity
   }
 
+  private def isOnDay(e : Entity, day : Day) : Boolean = 
+    Day(e.intProp("sessionDate.year"), e.intProp("sessionDate.month"), e.intProp("sessionDate.day")) == day
+  
   /**
    * Update entity from item. The parameter is modified and returned.
    */

@@ -6,10 +6,13 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import my.laps.mobile.LapValidator
 import my.laps.mobile.PracticeWebsiteDao
+import my.laps.mobile.datastore.PracticeDatastoreDao
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
   
+  val webDao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
+  val dao = new PracticeDatastoreDao(webDao)
   
   /**
    * Configuration change requests are POSTs.
@@ -55,7 +58,6 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
     val validator = LapValidator.createFromCookie(req)
     val conf = UserConf.parseFromCookies(req)
 	val html = new Html(conf)
-	val dao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
     
 	resp.setContentType("text/html")
     
@@ -76,7 +78,7 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
       case (Some(tid), Some(transponder)) => {
 		putTidToCookie(tid, resp)
 		// Output transponder session list:
-		val day = dao.getTransponderSessions(tid, transponder, validator)
+		val day = webDao.getTransponderSessions(tid, transponder, validator)
 		html.transponderSessions(day)
       }
     }

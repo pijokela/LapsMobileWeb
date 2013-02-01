@@ -25,7 +25,7 @@ class RssXml(val conf : UserConf) {
           <link>http://m-laps.appspot.com/app?tid={track.tid}&amp;transponder={session.driver.transponder.number}</link>
           <description>
             {session.driver.name}
-            Practice session at {track.name} during {conf.formatDate(session.date)}. Total of {session.passings} passings.
+            Practice session at {track.name} during {conf.formatDate(session.date)}.
           </description>
           <pubDate>{pubDateFormat.format(session.date)}</pubDate>
           <guid isPermaLink="false">trackActivityRss_{conf.formatDate(session.date)}_{session.driver.transponder.number}</guid>
