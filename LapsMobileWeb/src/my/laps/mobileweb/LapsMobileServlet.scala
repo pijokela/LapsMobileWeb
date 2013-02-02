@@ -8,12 +8,14 @@ import my.laps.mobile.LapValidator
 import my.laps.mobile.practice1.PracticeWebsiteDao
 import my.laps.mobile.datastore.PracticeDatastoreDao
 import my.laps.mobile.Day
+import my.laps.mobile.RealTimeService
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
   
   val webDao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
   val dao = new PracticeDatastoreDao(webDao)
+  val timeService = new RealTimeService
   
   /**
    * Configuration change requests are POSTs.
@@ -48,7 +50,7 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
     catch {
       case e : java.net.SocketTimeoutException => 
         val out = resp.getWriter()
-        val html = new Html(UserConf.createWithDefaults) // Create default user so that creation will not fail.
+        val html = new Html(UserConf.createWithDefaults(timeService)) // Create default user so that creation will not fail.
         out.println(html.header)
         out.println(html.errorPage)
         out.println(html.footer)
@@ -57,7 +59,7 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
   def doGetWithErrorHandling(req : HttpServletRequest, resp : HttpServletResponse) = {
     val validator = LapValidator.createFromCookie(req)
-    val conf = UserConf.parseFromCookies(req)
+    val conf = UserConf.parseFromCookies(req, timeService)
 	val html = new Html(conf)
     
 	resp.setContentType("text/html")

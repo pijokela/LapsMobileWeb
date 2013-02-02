@@ -10,7 +10,7 @@ import my.laps.mobile.practice1.TrackStatusParser
 
 class Tamua20130112 {
   val so = Source.fromFile("test/my/laps/mobile/tamua20130112.txt")
-  val user = UserConf.createWithDefaults()
+  val user = UserConf.createWithDefaults(TestTimeService("2013-01-12T10:10:10.EET"))
   
   def parse() = {
     val parser = new TrackStatusParser(so, new MylapsConf())
@@ -28,8 +28,9 @@ class Tamua20130112 {
   @Test
   def has4driversToday() {
     val r = parse()
-    Assert.assertEquals(4, 
-        r.practiceSessions.filter(s=>user.isToday(s.date)).size)
+    val sessions = r.practiceSessions.filter(s=>user.isToday(s.date))
+    println(sessions.size)
+    Assert.assertEquals(4, sessions.size)
   }
 
   @Test

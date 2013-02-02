@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat
 import java.text.DateFormatSymbols
 import java.util.TimeZone
 import my.laps.mobile.Day
+import my.laps.mobile.TimeService
 
 /**
  * Configuration that makes reading the mylaps website easier.
@@ -64,7 +65,8 @@ class MylapsConf {
 class UserConf(val locale : Locale, 
                dateFormat : DateFormat, 
                timeFormat : DateFormat, 
-               val formatLap : (Long,Locale)=>String) 
+               val formatLap : (Long,Locale)=>String,
+               timeService : TimeService) 
 {
   
   def formatDate(date : Date) : String = {
@@ -94,7 +96,7 @@ class UserConf(val locale : Locale,
   /**
    * Use the users locale to decide if this date is today:
    */
-  def isToday(date : Date) = formatDate(date) == formatDate(new Date())
+  def isToday(date : Date) = formatDate(date) == formatDate(timeService.now())
 }
 
 object UserConf extends HttpServletRequestParsing {
@@ -114,16 +116,16 @@ object UserConf extends HttpServletRequestParsing {
     new Locale(parts(0), parts(1))
   }
 
-  def parseFromCookies(req : HttpServletRequest) : UserConf = 
-    parseWithFunction(cookieValueOption(_, req))
+  def parseFromCookies(req : HttpServletRequest, timeService : TimeService) : UserConf = 
+    parseWithFunction(cookieValueOption(_, req), timeService)
   
-  def parseFromParams(req : HttpServletRequest) : UserConf = 
-    parseWithFunction(paramValueOption(_, req))
+  def parseFromParams(req : HttpServletRequest, timeService : TimeService) : UserConf = 
+    parseWithFunction(paramValueOption(_, req), timeService)
   
-  def createWithDefaults() : UserConf = 
-    parseWithFunction((s)=>None)
+  def createWithDefaults(timeService : TimeService) : UserConf = 
+    parseWithFunction((s)=>None, timeService)
     
-  def parseWithFunction(get : (String)=>Option[String]) : UserConf = {
+  def parseWithFunction(get : (String)=>Option[String], timeService : TimeService) : UserConf = {
     val localeValue = get("locale").getOrElse("fi-FI")
     val timeFormatValue = get("timeFormat").getOrElse("HH:mm:ss")
     val dateFormatValue = get("dateFormat").getOrElse("yyyy-MM-dd")
@@ -132,7 +134,8 @@ object UserConf extends HttpServletRequestParsing {
     new UserConf(createLocale(localeValue), 
         DateParser.createFormat(dateFormatValue), 
         DateParser.createFormat(timeFormatValue),
-        lapTimeFn(lapTimeFormatValue)
+        lapTimeFn(lapTimeFormatValue),
+        timeService
     )
   }
 }
