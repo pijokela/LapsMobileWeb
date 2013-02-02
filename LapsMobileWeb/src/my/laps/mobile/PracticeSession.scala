@@ -32,6 +32,15 @@ case class Driver(transponder : Transponder, name : String) {
 
 
 
+object PracticeSessionListItem {
+  def apply(ns:NodeSeq): PracticeSessionListItem = 
+    PracticeSessionListItem(
+        Driver(ns\"driver"),
+        new Date((ns\"sessionTime").text.toLong),
+        Day(ns\"sessionDate"\"day"),
+        (ns\"passings").text.toInt
+    )
+}
 
 case class PracticeSessionListItem(driver : Driver, sessionTime : Date, sessionDate : Day, passings : Int) 
   extends Identifiable 
@@ -39,6 +48,12 @@ case class PracticeSessionListItem(driver : Driver, sessionTime : Date, sessionD
   val date = sessionTime
   /** A transponder can only have a single session on a single day. */
   override def id = sessionDate.toString + "-" + driver.transponder.number.toString
+  def toXml = <practiceSessionListItem>
+    {driver.toXml}
+    <sessionTime>{sessionTime.getTime}</sessionTime>
+    <sessionDate>{sessionDate.toXml}</sessionDate>
+    <passings>{passings}</passings>
+  </practiceSessionListItem>
 }
 
 

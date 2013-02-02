@@ -23,6 +23,7 @@ import my.laps.mobile.Day
 import my.laps.mobile.PracticeSessionDay
 import my.laps.mobile.LapValidator
 import my.laps.mobile.PracticeSessionDay
+import scala.xml.XML
 
 /**
  * Convert google entity objects to nice entities.
@@ -52,12 +53,7 @@ object PracticeDatastoreDao {
     itemEntity.setProperty("id", item.id)
     itemEntity.setProperty("tid", tid)
     itemEntity.setProperty("date", item.date)
-    itemEntity.setProperty("sessionDate.year", item.sessionDate.year)
-    itemEntity.setProperty("sessionDate.month", item.sessionDate.month)
-    itemEntity.setProperty("sessionDate.day", item.sessionDate.day)
-    itemEntity.setProperty("passings", item.passings)
-    itemEntity.setProperty("driver.name", item.driver.name)
-    itemEntity.setProperty("driver.transponder.number", item.driver.transponder.number)
+    itemEntity.setProperty("xml", item.toXml.toString)
     itemEntity
   }
   
@@ -78,16 +74,7 @@ object PracticeDatastoreDao {
     (
         e.longProp("tid"),
         PracticeSessionListItem(
-            Driver(
-                Transponder(e.longProp("driver.transponder.number")), e.strProp("driver.name")
-            ),
-            e.dateProp("date"),
-            Day(
-                e.intProp("sessionDate.year"),
-                e.intProp("sessionDate.month"),
-                e.intProp("sessionDate.day")
-            ),
-            e.intProp("passings")
+            XML.loadString(e.strProp("xml"))
         )
     )
     
@@ -97,11 +84,8 @@ object PracticeDatastoreDao {
   def practiceSessionDayToEntity(session : PracticeSessionDay, itemEntity : Entity) : Entity = {
     itemEntity.setProperty("id", session.id)
     itemEntity.setProperty("tid", session.track.tid)
-    itemEntity.setProperty("sessionDate.year", session.day.year)
-    itemEntity.setProperty("sessionDate.month", session.day.month)
-    itemEntity.setProperty("sessionDate.day", session.day.day)
-    itemEntity.setProperty("driver.name", session.driver.name)
     itemEntity.setProperty("driver.transponder.number", session.driver.transponder.number)
+    itemEntity.setProperty("xml", session.toXml.toString)
     itemEntity
   }
   
@@ -115,6 +99,14 @@ object PracticeDatastoreDao {
     itemEntity
   }
 
+  def entityToPracticeSessionDay(e : Entity) : (Long, PracticeSessionDay) = 
+    (
+        e.longProp("tid"),
+        PracticeSessionDay(
+            XML.loadString(e.strProp("xml"))
+        )
+    )
+    
 }
 
 /**
