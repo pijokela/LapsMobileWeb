@@ -1,10 +1,17 @@
-package my.laps.mobile
+package my.laps.mobile.practice1
 
 import scala.io.Source
 import scala.io.Codec
 import my.laps.mobileweb.MylapsConf
 import my.laps.mobileweb.MylapsConf
 import my.laps.mobileweb.MylapsConf
+import my.laps.mobile.practice1.PracticeSessionParser
+import my.laps.mobile.practice1.TrackStatusParser
+import my.laps.mobile.LapValidator
+import my.laps.mobile.PracticeSessionDay
+import my.laps.mobile.TrackPracticeDay
+import my.laps.mobile.TrackStatus
+import scala.io.Codec.charset2codec
 
 class PracticeWebsiteDao(urlBase : String, conf : MylapsConf = new MylapsConf()) {
   private def url(tid : Long) = urlBase + "/practice/showTrack.jsp?tid=" + tid

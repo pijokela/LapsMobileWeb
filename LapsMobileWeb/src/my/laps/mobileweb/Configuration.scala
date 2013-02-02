@@ -55,6 +55,7 @@ class MylapsConf {
     
     Day(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
   }
+  
 }
 
 /**
@@ -68,6 +69,17 @@ class UserConf(val locale : Locale,
   
   def formatDate(date : Date) : String = {
     dateFormat.format(date)
+  }
+  
+  def formatDate(day : Day) : String = {
+    val cal = Calendar.getInstance(UserConf.FI)
+    cal.setTimeZone(UserConf.TimeZoneFI)
+    
+    cal.set(Calendar.YEAR, day.year)
+    cal.set(Calendar.MONTH, day.month)
+    cal.set(Calendar.DAY_OF_MONTH, day.day)
+    
+    dateFormat.format(cal.getTime())
   }
   
   def formatTime(date : Date) : String = {

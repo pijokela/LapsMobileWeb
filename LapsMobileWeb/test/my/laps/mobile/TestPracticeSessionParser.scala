@@ -4,6 +4,8 @@ import scala.io.Source
 import my.laps.mobileweb.MylapsConf
 import org.junit.Test
 import org.junit.Assert
+import my.laps.mobile.practice1.PracticeSessionParser
+import my.laps.mobile.practice1.DriverNameParser
 
 
 class Utf8DriverName {

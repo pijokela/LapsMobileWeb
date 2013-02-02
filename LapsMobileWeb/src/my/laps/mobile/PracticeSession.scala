@@ -3,43 +3,60 @@ package my.laps.mobile
 import java.util.Date
 import java.util.Calendar
 import java.util.TimeZone
+import scala.xml.Elem
+import scala.xml.NodeSeq
 
-case class Transponder(number : Long)
-
-case class Driver(transponder : Transponder, name : String)
-
-case class Day(year : Int, month : Int, day : Int) {
-  override def toString() = "" + year + "-" + month + "-" + day
+/**
+ * Something that has a unique id. This makes datastore easier to use.
+ * This is needed for objects that are stored individually in the datastore.
+ */
+trait Identifiable {
+  def id : String
 }
 
-case class PracticeSessionListItem(driver : Driver, sessionTime : Date, sessionDate : Day, passings : Int) {
+object Transponder {
+  def apply(ns : NodeSeq) : Transponder = Transponder((ns \ "number").text.toLong)
+}
+
+case class Transponder(number : Long) {
+  def toXml = <transponder><number>{number}</number></transponder>
+}
+
+object Driver {
+  def apply(e:Elem) : Driver = Driver(transponder = Transponder(e \ "transponder"), name = (e \ "name").text)
+}
+
+case class Driver(transponder : Transponder, name : String) {
+  def toXml = <driver><name>{name}</name>{transponder.toXml}</driver>
+}
+
+
+
+
+case class PracticeSessionListItem(driver : Driver, sessionTime : Date, sessionDate : Day, passings : Int) 
+  extends Identifiable 
+{
   val date = sessionTime
   /** A transponder can only have a single session on a single day. */
-  def id = sessionDate.toString + "-" + driver.transponder.number.toString
+  override def id = sessionDate.toString + "-" + driver.transponder.number.toString
 }
 
-case class Lap(durationMs : Long) {
-  def fasterThan(other : Lap) = durationMs - other.durationMs <= 0
-}
 
-case class LapWithData(lap : Lap, previous : Lap, error : Option[String], bestValid : Lap, worstValid : Lap) {
-  def fasterThanPrevious() = lap.fasterThan(previous)
-  
-  /**
-   * Scales the length of this lap compared to other laps. The best lap gets
-   * min and the worst gets max and the rest of the laps are in between.
-   */
-  def scaledLength(min : Int, max : Int) = {
-    def best = bestValid.durationMs.toDouble
-    def worst = worstValid.durationMs.toDouble
-    def length = lap.durationMs.toDouble
-   
-    val scaled = (length - best) / (worst - best)
-    (scaled * (max - min)) + min
+object PracticeSession {
+  def apply(ns:NodeSeq):PracticeSession = {
+    val validatorE = ns \ "validator"
+    val validator = new LapValidator((validatorE \ "minMs").text.toLong, (validatorE \ "maxMs").text.toLong)
+    
+    PracticeSession(
+        startDate = new Date((ns\"startDate").text.toLong),
+        laps = (ns\"lap").map(e=>Lap(e)).toList,
+        validator = validator
+    )
   }
 }
 
-case class PracticeSession(startDate : Date, laps : List[Lap], validator : LapValidator) {
+case class PracticeSession(startDate : Date, laps : List[Lap], validator : LapValidator) 
+{
   private def sortLapsAndTakeHead(lapsList : List[Lap], comp : (Lap,Lap)=>Boolean) = {
     lapsList.sortWith(comp(_,_)).headOption.getOrElse(Lap(-1))
   }
@@ -57,8 +74,21 @@ case class PracticeSession(startDate : Date, laps : List[Lap], validator : LapVa
   lazy val averageMsValidLaps = validLaps.map(_.durationMs).sum / validLaps.size.asInstanceOf[Double]
   lazy val bestLapFromValidLaps = sortLapsAndTakeHead(validLaps, _.durationMs < _.durationMs)
   lazy val worstLapFromValidLaps = sortLapsAndTakeHead(validLaps, _.durationMs > _.durationMs)
+  
+  def toXml = 
+    <practiceSession>
+      <startDate>{startDate.getTime}</startDate>
+      <validator><min>{validator.minMs}</min><max>{validator.maxMs}</max></validator>
+      {laps.map(_.toXml)}
+    </practiceSession>
 }
 
-case class PracticeSessionDay(date : Date, track : TrackStatus, driver : Driver, sessions : List[PracticeSession]) {
+
+
+case class PracticeSessionDay(day : Day, track : TrackStatus, driver : Driver, sessions : List[PracticeSession]) 
+  extends Identifiable 
+{
+  override def id = day.toString + "_" + track.tid + "_" + driver.transponder.number
   def sessionsNewestFirst() = sessions.sortWith((t1, t2)=>t1.startDate.after(t2.startDate))
+  def toXml = <practiceSessionDay>{day.toXml}{track.toXml}{driver.toXml}{sessions.map(_.toXml)}</practiceSessionDay>
 } 

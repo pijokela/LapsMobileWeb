@@ -1,13 +1,16 @@
-package my.laps.mobile
+package my.laps.mobile.practice1
 
 import scala.io.Source
 import scala.xml.XML
 import scala.xml.Node
 import java.util.Date
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.Calendar
 import my.laps.mobileweb.MylapsConf
+import my.laps.mobile.Driver
+import my.laps.mobile.Length
+import my.laps.mobile.PracticeSessionListItem
+import my.laps.mobile.TrackPracticeDay
+import my.laps.mobile.TrackStatus
+import my.laps.mobile.Transponder
 
 /**
  * The parameter should be the page from this URL:

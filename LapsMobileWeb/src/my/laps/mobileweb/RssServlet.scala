@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import my.laps.mobile.LapValidator
-import my.laps.mobile.PracticeWebsiteDao
+import my.laps.mobile.practice1.PracticeWebsiteDao
 import my.laps.mobile.datastore.PracticeDatastoreDao
 
 class RssServlet extends HttpServlet with HttpServletRequestParsing {

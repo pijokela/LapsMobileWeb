@@ -1,10 +1,16 @@
-package my.laps.mobile
+package my.laps.mobile.practice1
 
 import scala.io.Source
 import java.util.Date
-import scala.xml.XML
 import my.laps.mobileweb.MylapsConf
 import my.laps.mobileweb.MylapsConf
+import my.laps.mobile.Driver
+import my.laps.mobile.Lap
+import my.laps.mobile.LapValidator
+import my.laps.mobile.PracticeSession
+import my.laps.mobile.PracticeSessionDay
+import my.laps.mobile.TrackStatus
+import my.laps.mobile.Transponder
 
 class DriverNameParser {
   /** <span class="hide">Laptimes for Name of Driver</span> */
@@ -21,9 +27,9 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
   lazy val confidential = lines.find(_.contains("The laptimes of this transponder have been made confidential by the owner.")).isDefined
   
   lazy val parseTrackPracticeDay = if(confidential) {
-    PracticeSessionDay(new Date(), track, Driver(Transponder(-1), "Results are confidential"), Nil)
+    PracticeSessionDay(conf.day(new Date()), track, Driver(Transponder(-1), "Results are confidential"), Nil)
   } else {
-    PracticeSessionDay(parseDate, track, Driver(parseTransponder, parseDriverName), parsePracticeSesssions)
+    PracticeSessionDay(conf.day(parseDate), track, Driver(parseTransponder, parseDriverName), parsePracticeSesssions)
   }
   
   lazy val parsePracticeSesssions : List[PracticeSession] = {

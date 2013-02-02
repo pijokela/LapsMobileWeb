@@ -107,7 +107,8 @@ class Html(val conf : UserConf) {
 	def practiceSessionSummary(tid : Long, sessionListItem : PracticeSessionListItem, withTime : Boolean) = """
 	  <div>""" + 
 	  (if (withTime) conf.formatTime(sessionListItem.date) else conf.formatDate(sessionListItem.date)) + 
-	  """: <a href="?tid=""" + tid + "&transponder=" + sessionListItem.driver.transponder.number + """">""" + 
+	  """: <a href="?tid=""" + tid + "&transponder=" + sessionListItem.driver.transponder.number + 
+	  (if (!withTime)"&day=" + sessionListItem.sessionDate.toString else "") + """">""" + 
 	  sessionListItem.driver.name + "</a> did " + sessionListItem.passings + 
 	  " passings.</div>"
 	  
@@ -146,7 +147,7 @@ class Html(val conf : UserConf) {
 	  <ol>""" + session.lapsWithData.map(sessionLap(_)).mkString("\n") + """</ol></div>"""
 	
 	def transponderSessions(practiceSessionDay : PracticeSessionDay) = trackSummary(practiceSessionDay.track) + """
-	    <h2>Results from """ + conf.formatDate(practiceSessionDay.date) + """</h2>
+	    <h2>Results from """ + conf.formatDate(practiceSessionDay.day) + """</h2>
 	  """ + driverSummary(practiceSessionDay.driver) + """
 	  """ + practiceSessionDay.sessions.map(sessionLapSection(_)).mkString("\n")
 }

@@ -6,6 +6,7 @@ import my.laps.mobileweb.UserConf
 import org.junit.Test
 import org.junit.Assert
 import java.util.Calendar
+import my.laps.mobile.practice1.TrackStatusParser
 
 class Tamua20130112 {
   val so = Source.fromFile("test/my/laps/mobile/tamua20130112.txt")

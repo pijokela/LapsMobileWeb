@@ -5,8 +5,9 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import my.laps.mobile.LapValidator
-import my.laps.mobile.PracticeWebsiteDao
+import my.laps.mobile.practice1.PracticeWebsiteDao
 import my.laps.mobile.datastore.PracticeDatastoreDao
+import my.laps.mobile.Day
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
@@ -63,6 +64,8 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
     
 	val trackId = longParamOption("tid", req)
     val tp = longParamOption("transponder", req)
+    val day = dayParamOption("day", req)
+    
     val pageContent = (trackId, tp) match {
       case (None, None) => {
 		val tid = getTidFromCookie(req)
@@ -72,14 +75,14 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
       case (Some(tid), None) => {
 		putTidToCookie(tid, resp)
 		// Output track practice day:
-		val day = dao.getTrackPracticeDay(tid)
-		html.trackTrainingDay(day)
+		val trackDay = dao.getTrackPracticeDay(tid)
+		html.trackTrainingDay(trackDay)
       }
       case (Some(tid), Some(transponder)) => {
 		putTidToCookie(tid, resp)
 		// Output transponder session list:
-		val day = webDao.getTransponderSessions(tid, transponder, validator)
-		html.transponderSessions(day)
+		val practiceDay = dao.getTransponderSessions(tid, transponder, day, validator)
+		html.transponderSessions(practiceDay)
       }
     }
     
@@ -101,6 +104,18 @@ trait HttpServletRequestParsing {
     catch {
       case t : NumberFormatException => None
     }
+    
+  def dayParamOption(name : String, req : HttpServletRequest) : Option[Day] = 
+    try {
+      val dayString = paramOption(name, req).getOrElse(return None)
+      val parts = dayString.split("-").map(_.toInt)
+      Some(Day(parts(0), parts(1), parts(2)))
+    }
+    catch {
+      case t : NumberFormatException => None
+      case t : ArrayIndexOutOfBoundsException => None
+    }
+    
   
   def cookieOption(name : String, req : HttpServletRequest) : Option[Cookie] = {
     val cookies = req.getCookies()
