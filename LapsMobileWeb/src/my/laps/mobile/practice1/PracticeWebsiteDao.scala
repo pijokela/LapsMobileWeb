@@ -5,8 +5,6 @@ import scala.io.Codec
 import my.laps.mobileweb.MylapsConf
 import my.laps.mobileweb.MylapsConf
 import my.laps.mobileweb.MylapsConf
-import my.laps.mobile.practice1.PracticeSessionParser
-import my.laps.mobile.practice1.TrackStatusParser
 import my.laps.mobile.LapValidator
 import my.laps.mobile.PracticeSessionDay
 import my.laps.mobile.TrackPracticeDay
