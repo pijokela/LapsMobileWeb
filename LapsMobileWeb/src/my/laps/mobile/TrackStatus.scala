@@ -13,13 +13,13 @@ case class Length(value : Double, unit : String) {
 }
 
 object TrackStatus {
-  def apply(e : Elem) : TrackStatus = 
+  def apply(ns : NodeSeq) : TrackStatus = 
     TrackStatus(
-        online = (e \ "online").text == "true",
-        name = (e \ "name").text,
-        location = (e \ "location").text,
-        tid = (e \ "tid").text.toLong,
-        length = Length(e \ "length")
+        online = (ns \ "online").text == "true",
+        name = (ns \ "name").text,
+        location = (ns \ "location").text,
+        tid = (ns \ "tid").text.toLong,
+        length = Length(ns \ "length")
     )
 }
 

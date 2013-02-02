@@ -8,7 +8,7 @@ object Day {
     Day(parts(0).toInt, parts(1).toInt, parts(2).toInt)
   }
   
-  def apply(elem : Elem) : Day = apply(elem.text)
+  def apply(ns : NodeSeq) : Day = apply(ns.text)
 }
 
 /**

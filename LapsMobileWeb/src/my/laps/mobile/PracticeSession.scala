@@ -23,7 +23,7 @@ case class Transponder(number : Long) {
 }
 
 object Driver {
-  def apply(e:Elem) : Driver = Driver(transponder = Transponder(e \ "transponder"), name = (e \ "name").text)
+  def apply(ns:NodeSeq) : Driver = Driver(transponder = Transponder(ns \ "transponder"), name = (ns \ "name").text)
 }
 
 case class Driver(transponder : Transponder, name : String) {
@@ -78,12 +78,22 @@ case class PracticeSession(startDate : Date, laps : List[Lap], validator : LapVa
   def toXml = 
     <practiceSession>
       <startDate>{startDate.getTime}</startDate>
-      <validator><min>{validator.minMs}</min><max>{validator.maxMs}</max></validator>
+      <validator><minMs>{validator.minMs}</minMs><maxMs>{validator.maxMs}</maxMs></validator>
       {laps.map(_.toXml)}
     </practiceSession>
 }
 
 
+
+object PracticeSessionDay {
+  def apply(ns:NodeSeq) : PracticeSessionDay = 
+    PracticeSessionDay(
+      Day(ns\"day"),
+      TrackStatus(ns\"trackStatus"),
+      Driver(ns\"driver"),
+      (ns\"practiceSession").map(s=>PracticeSession(s)).toList
+    )
+}
 
 case class PracticeSessionDay(day : Day, track : TrackStatus, driver : Driver, sessions : List[PracticeSession]) 
   extends Identifiable 
