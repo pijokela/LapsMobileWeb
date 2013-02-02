@@ -4,6 +4,7 @@ import my.laps.mobile.practice1.PracticeWebsiteDao
 import my.laps.mobile.TrackPracticeDay
 import com.google.appengine.api.datastore.DatastoreServiceFactory
 import com.google.appengine.api.datastore.Entity
+import com.google.appengine.api.datastore.Text
 import my.laps.mobile.PracticeSessionListItem
 import com.google.appengine.api.datastore.KeyFactory
 import my.laps.mobile.PracticeSessionListItem
@@ -24,24 +25,9 @@ import my.laps.mobile.PracticeSessionDay
 import my.laps.mobile.LapValidator
 import my.laps.mobile.PracticeSessionDay
 import scala.xml.XML
-
-/**
- * Convert google entity objects to nice entities.
- */
-object NiceEntity {
-  implicit def toNiceEntity(e : Entity) = new NiceEntity(e)
-  implicit def toList[A](javaList : java.util.List[A]) : List[A] = javaList.toArray().map(_.asInstanceOf[A]).toList
-}
-
-/**
- * Create a nicer interface for handling entities here.
- */
-class NiceEntity(entity : Entity) {
-  def strProp(name : String) = entity.getProperty(name).asInstanceOf[String]
-  def longProp(name : String) = entity.getProperty(name).asInstanceOf[Long]
-  def intProp(name : String) = entity.getProperty(name).asInstanceOf[Long].toInt
-  def dateProp(name : String) = entity.getProperty(name).asInstanceOf[Date]
-}
+import scala.xml.Elem
+import com.google.appengine.api.datastore.Query.CompositeFilter
+import java.util.Arrays
 
 
 object PracticeDatastoreDao {
@@ -53,7 +39,7 @@ object PracticeDatastoreDao {
     itemEntity.setProperty("id", item.id)
     itemEntity.setProperty("tid", tid)
     itemEntity.setProperty("date", item.date)
-    itemEntity.setProperty("xml", item.toXml.toString)
+    itemEntity.xml(item.toXml)
     itemEntity
   }
   
@@ -68,14 +54,12 @@ object PracticeDatastoreDao {
   }
 
   private def isOnDay(e : Entity, day : Day) : Boolean = 
-    Day(e.intProp("sessionDate.year"), e.intProp("sessionDate.month"), e.intProp("sessionDate.day")) == day
+    Day(e.xml\\"day") == day
   
   def entityToPracticeSessionListItem(e : Entity) : (Long, PracticeSessionListItem) = 
     (
         e.longProp("tid"),
-        PracticeSessionListItem(
-            XML.loadString(e.strProp("xml"))
-        )
+        PracticeSessionListItem(e.xml)
     )
     
   /**
@@ -85,7 +69,7 @@ object PracticeDatastoreDao {
     itemEntity.setProperty("id", session.id)
     itemEntity.setProperty("tid", session.track.tid)
     itemEntity.setProperty("driver.transponder.number", session.driver.transponder.number)
-    itemEntity.setProperty("xml", session.toXml.toString)
+    itemEntity.xml(session.toXml)
     itemEntity
   }
   
@@ -102,9 +86,7 @@ object PracticeDatastoreDao {
   def entityToPracticeSessionDay(e : Entity) : (Long, PracticeSessionDay) = 
     (
         e.longProp("tid"),
-        PracticeSessionDay(
-            XML.loadString(e.strProp("xml"))
-        )
+        PracticeSessionDay(e.xml)
     )
     
 }
@@ -140,7 +122,21 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao) {
     val practiceDay = websiteDao.getTransponderSessions(tid, transponder, validator)
     storeOrUpdate(practiceDay)
     
-    practiceDay
+    day match {
+      case None => practiceDay
+      case Some(day) => findPracticeDay(tid, transponder, day)
+        .getOrElse(throw new IllegalArgumentException("No results for " + transponder + " on day " + day.toString))
+    }
+  }
+  
+  def findPracticeDay(tid : Long, transponder : Long, day : Day) : Option[PracticeSessionDay] = {
+    val trackKey = KeyFactory.createKey("TrackId", tid)
+    val tidIs = new FilterPredicate("tid", FilterOperator.EQUAL, tid)
+    val transponderIs = new FilterPredicate("driver.transponder.number", FilterOperator.EQUAL, transponder);
+    val filter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(tidIs, transponderIs))
+    val query = new Query("PracticeSessionListItem", trackKey).setFilter(filter).addSort("day", Query.SortDirection.ASCENDING)
+    val items = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(200)).toList
+    items.find(i=>Day(i.xml\\"day") == day).map(i=>PracticeDatastoreDao.entityToPracticeSessionDay(i)._2)
   }
   
   
