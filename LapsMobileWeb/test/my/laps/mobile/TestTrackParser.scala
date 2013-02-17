@@ -1,8 +1,7 @@
 package my.laps.mobile
 
 import scala.io.Source
-import my.laps.mobileweb.MylapsConf
-import my.laps.mobileweb.UserConf
+import my.laps.mobileweb._
 import org.junit.Test
 import org.junit.Assert
 import java.util.Calendar

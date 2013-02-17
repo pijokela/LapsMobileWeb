@@ -9,6 +9,8 @@ import my.laps.mobile.practice1.PracticeWebsiteDao
 import my.laps.mobile.datastore.PracticeDatastoreDao
 import my.laps.mobile.Day
 import my.laps.mobile.RealTimeService
+import my.laps.mobileweb.HttpServletRequestParsing.toMyRequest
+import my.laps.mobileweb.HttpServletRequestParsing.toMyResponse
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
@@ -95,54 +97,3 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   }
 }
 
-trait HttpServletRequestParsing {
-  def paramOption(name : String, req : HttpServletRequest) : Option[String] = 
-    if (req.getParameter(name) == null) None else Some(req.getParameter(name))
-  
-  def longParamOption(name : String, req : HttpServletRequest) : Option[Long] = 
-    try {
-      paramOption(name, req).map(_.toLong)
-    }
-    catch {
-      case t : NumberFormatException => None
-    }
-    
-  def dayParamOption(name : String, req : HttpServletRequest) : Option[Day] = 
-    try {
-      val dayString = paramOption(name, req).getOrElse(return None)
-      val parts = dayString.split("-").map(_.toInt)
-      Some(Day(parts(0), parts(1), parts(2)))
-    }
-    catch {
-      case t : NumberFormatException => None
-      case t : ArrayIndexOutOfBoundsException => None
-    }
-    
-  
-  def cookieOption(name : String, req : HttpServletRequest) : Option[Cookie] = {
-    val cookies = req.getCookies()
-    if (cookies == null) return None
-    cookies.find(_.getName() == name)
-  }
-  
-  def cookieValueOption(name : String, req : HttpServletRequest) : Option[String] = 
-    cookieOption(name, req).map(_.getValue)
-  
-  def paramValueOption(name : String, req : HttpServletRequest) : Option[String] =
-    req.getParameter(name) match {
-      case null => None
-      case v => Some(v)
-    }
-  
-  def getTidFromCookie(req : HttpServletRequest) =
-    cookieOption("tid", req).map(_.getValue().toLong).getOrElse(1429L)
-
-  def putTidToCookie(tid : Long, resp : HttpServletResponse) = 
-	resp.addCookie(new Cookie("tid", tid.toString))
-	
-  def putCookie(name : String, value : String, resp : HttpServletResponse) = {
-    val cookie = new Cookie(name, value)
-    cookie.setMaxAge(3600*24*365)
-    resp.addCookie(cookie)
-  }
-}

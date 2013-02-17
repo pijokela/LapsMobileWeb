@@ -116,10 +116,10 @@ object UserConf extends HttpServletRequestParsing {
     new Locale(parts(0), parts(1))
   }
 
-  def parseFromCookies(req : HttpServletRequest, timeService : TimeService) : UserConf = 
+  def parseFromCookies(req : MyHttpRequest, timeService : TimeService) : UserConf = 
     parseWithFunction(cookieValueOption(_, req), timeService)
   
-  def parseFromParams(req : HttpServletRequest, timeService : TimeService) : UserConf = 
+  def parseFromParams(req : MyHttpRequest, timeService : TimeService) : UserConf = 
     parseWithFunction(paramValueOption(_, req), timeService)
   
   def createWithDefaults(timeService : TimeService) : UserConf = 
@@ -156,7 +156,9 @@ class DateParser {
   
   private val formats = List(
     DateParser.createFormat("dd MMM, yyyy"),
-    DateParser.createFormat("dd MMM yyyy")
+    DateParser.createFormat("dd MMM yyyy"),
+    // Text export from practice 1:
+    DateParser.createFormat("yyyy-MM-dd'T'HH:mm:ss")
   )
 
   def parse(string : String) : Date = {

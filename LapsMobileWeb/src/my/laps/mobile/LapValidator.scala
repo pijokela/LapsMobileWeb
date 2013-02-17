@@ -2,6 +2,7 @@ package my.laps.mobile
 
 import my.laps.mobileweb.HttpServletRequestParsing
 import javax.servlet.http.HttpServletRequest
+import my.laps.mobileweb.MyHttpRequest
 
 class LapValidator(val minMs : Long, val maxMs : Long) {
   val tests = List(
@@ -18,7 +19,7 @@ class LapValidator(val minMs : Long, val maxMs : Long) {
 }
 
 object LapValidator extends HttpServletRequestParsing {
-  def createFromCookie(req : HttpServletRequest) : LapValidator = 
+  def createFromCookie(req : MyHttpRequest) : LapValidator = 
     cookieOption("minMs-maxMs", req).map(
       cookie=>{
         val parts = cookie.getValue().split("-")
@@ -27,7 +28,7 @@ object LapValidator extends HttpServletRequestParsing {
 		new LapValidator(minMs, maxMs)
       }).getOrElse(new LapValidator(5000, 25000))
       
-  def createFromParam(req : HttpServletRequest) : LapValidator = 
+  def createFromParam(req : MyHttpRequest) : LapValidator = 
     paramValueOption("minMs-maxMs", req).map(
       value=>{
         val parts = value.split("-")

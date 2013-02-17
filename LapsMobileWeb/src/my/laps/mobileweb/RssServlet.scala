@@ -7,6 +7,9 @@ import my.laps.mobile.LapValidator
 import my.laps.mobile.practice1.PracticeWebsiteDao
 import my.laps.mobile.datastore.PracticeDatastoreDao
 import my.laps.mobile.RealTimeService
+import my.laps.mobileweb.HttpServletRequestParsing.toMyRequest
+import my.laps.mobileweb.HttpServletRequestParsing.toMyResponse
+
 
 class RssServlet extends HttpServlet with HttpServletRequestParsing {
 

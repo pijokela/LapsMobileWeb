@@ -12,14 +12,6 @@ import my.laps.mobile.PracticeSessionDay
 import my.laps.mobile.TrackStatus
 import my.laps.mobile.Transponder
 
-class DriverNameParser {
-  /** <span class="hide">Laptimes for Name of Driver</span> */
-  private val nameRegex = "<span class=\"hide\">Laptimes for ((?:\\p{L}|\\s|\\d|[\\.;:'])+)</span>".r
-  
-  def parse(line : String) = 
-    nameRegex.findFirstMatchIn(line).map(_.group(1))
-}
-
 class PracticeSessionParser(track : TrackStatus, source : Source, validator : LapValidator, conf : MylapsConf) {
 
   val lines = source.getLines.toList
