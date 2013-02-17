@@ -28,6 +28,8 @@ import scala.xml.XML
 import scala.xml.Elem
 import com.google.appengine.api.datastore.Query.CompositeFilter
 import java.util.Arrays
+import my.laps.mobile.practice1.AllLapsFromUserOnTrackDao
+import my.laps.mobile.TrackStatus
 
 
 object PracticeDatastoreDao {
@@ -94,7 +96,7 @@ object PracticeDatastoreDao {
 /**
  * Dao class contains interface methods for the servlets.
  */
-class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao) {
+class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : AllLapsFromUserOnTrackDao) {
   
   val datastore = DatastoreServiceFactory.getDatastoreService()
   
@@ -118,15 +120,36 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao) {
     TrackPracticeDay(newResults.track, items2)
   }
   
-  def getTransponderSessions(tid : Long, transponder : Long, day : Option[Day], validator : LapValidator) : PracticeSessionDay = {
-    val practiceDay = websiteDao.getTransponderSessions(tid, transponder, validator)
-    storeOrUpdate(practiceDay)
+  def getTransponderSessions(tid : Long, 
+                             transponder : Long, 
+                             day : Option[Day], 
+                             validator : LapValidator) : PracticeSessionDay = 
+  {
     
     day match {
-      case None => practiceDay
-      case Some(day) => findPracticeDay(tid, transponder, day)
-        .getOrElse(throw new IllegalArgumentException("No results for " + transponder + " on day " + day.toString))
+      case None => 
+        // When results are for today, always update from practice website:
+        val practiceDay = websiteDao.getTransponderSessions(tid, transponder, validator)
+        storeOrUpdate(practiceDay)
+        practiceDay
+      case Some(day) => 
+        findPracticeDay(tid, transponder, day).orElse {
+            // When results are older, update if data is missing:
+            val practiceDay = websiteDao.getTransponderSessions(tid, transponder, validator)
+            updateData(practiceDay.track, practiceDay.driver)
+            findPracticeDay(tid, transponder, day)
+        }.getOrElse(
+            throw new IllegalArgumentException("No results for " + transponder + " on day " + day.toString)
+        )
     }
+  }
+  
+  /**
+   * Reads all data from practice1 for this transponder and track and stores it to db.
+   */
+  def updateData(track : TrackStatus, driver : Driver) {
+    val sessionDays = allLapsWebsiteDao.getAllPracticeSessionDaysForDriver(track, driver)
+    sessionDays.map(storeOrUpdate(_))
   }
   
   def findPracticeDay(tid : Long, transponder : Long, day : Day) : Option[PracticeSessionDay] = {

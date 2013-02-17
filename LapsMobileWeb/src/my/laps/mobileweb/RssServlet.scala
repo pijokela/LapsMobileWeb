@@ -9,12 +9,15 @@ import my.laps.mobile.datastore.PracticeDatastoreDao
 import my.laps.mobile.RealTimeService
 import my.laps.mobileweb.HttpServletRequestParsing.toMyRequest
 import my.laps.mobileweb.HttpServletRequestParsing.toMyResponse
+import my.laps.mobile.practice1.AllLapsFromUserOnTrackDao
 
 
 class RssServlet extends HttpServlet with HttpServletRequestParsing {
 
-  val websiteDao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
-  val dao = new PracticeDatastoreDao(websiteDao)
+  val mylapsConf = new MylapsConf()
+  val webDao = new PracticeWebsiteDao("http://www.mylaps.com", mylapsConf)
+  val lapsFromUserDao = new AllLapsFromUserOnTrackDao("http://www.mylaps.com", mylapsConf)
+  val dao = new PracticeDatastoreDao(webDao, lapsFromUserDao)
   val timeService = new RealTimeService
 
   override def doGet(req : HttpServletRequest, resp : HttpServletResponse) = {

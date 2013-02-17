@@ -5,6 +5,7 @@ import java.util.Calendar
 import java.util.TimeZone
 import scala.xml.Elem
 import scala.xml.NodeSeq
+import java.util.Locale
 
 /**
  * Something that has a unique id. This makes datastore easier to use.
@@ -75,6 +76,8 @@ case class PracticeSession(startDate : Date, laps : List[Lap], validator : LapVa
   private def sortLapsAndTakeHead(lapsList : List[Lap], comp : (Lap,Lap)=>Boolean) = {
     lapsList.sortWith(comp(_,_)).headOption.getOrElse(Lap(-1))
   }
+  
+  def getDay(tz : TimeZone, l : Locale) = Day(startDate, tz, l)
   
   lazy val validLaps = laps.filter(validator.isValid(_))
   def lapsWithErrors = laps.map(l=>(l, validator.errorMessage(l)))

@@ -8,6 +8,10 @@ import my.laps.mobile.PracticeSession
 import my.laps.mobile.Lap
 import my.laps.mobile.LapValidator
 import java.util.Date
+import my.laps.mobile.Driver
+import my.laps.mobile.PracticeSessionDay
+import my.laps.mobileweb.UserConf
+import my.laps.mobile.TrackStatus
 
 
 /**
@@ -18,7 +22,14 @@ class AllLapsFromUserOnTrackDao(urlBase : String, conf : MylapsConf = new Mylaps
 
   private def sourceFromUrlString(url : String) = Source.fromURL(url)(Codec.UTF8)
   
-  def getAllPractiseSessionDaysForTransponderOnTrack(tid : Long, tp : Transponder) : List[PracticeSession] = {
+  def getAllPracticeSessionDaysForDriver(trackStatus : TrackStatus, driver : Driver) : List[PracticeSessionDay] = {
+    val sessions = getAllPractiseSessionsForTransponderOnTrack(trackStatus.tid, driver.transponder)
+    sessions.groupBy(s=>s.getDay(UserConf.TimeZoneFI, UserConf.FI))
+      .map(p=>PracticeSessionDay(p._1, trackStatus, driver, p._2))
+      .toList
+  }
+  
+  def getAllPractiseSessionsForTransponderOnTrack(tid : Long, tp : Transponder) : List[PracticeSession] = {
     val urlString = url(tid, tp)
     val source = sourceFromUrlString(urlString)
     val parser = try {

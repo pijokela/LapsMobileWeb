@@ -11,12 +11,15 @@ import my.laps.mobile.Day
 import my.laps.mobile.RealTimeService
 import my.laps.mobileweb.HttpServletRequestParsing.toMyRequest
 import my.laps.mobileweb.HttpServletRequestParsing.toMyResponse
+import my.laps.mobile.practice1.AllLapsFromUserOnTrackDao
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
   
-  val webDao = new PracticeWebsiteDao("http://www.mylaps.com", new MylapsConf())
-  val dao = new PracticeDatastoreDao(webDao)
+  val mylapsConf = new MylapsConf()
+  val webDao = new PracticeWebsiteDao("http://www.mylaps.com", mylapsConf)
+  val lapsFromUserDao = new AllLapsFromUserOnTrackDao("http://www.mylaps.com", mylapsConf)
+  val dao = new PracticeDatastoreDao(webDao, lapsFromUserDao)
   val timeService = new RealTimeService
   
   /**
