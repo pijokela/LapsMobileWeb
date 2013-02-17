@@ -80,7 +80,7 @@ object PracticeDatastoreDao {
    */
   def practiceSessionDayToEntity(session : PracticeSessionDay) : Entity = {
     val itemKey = KeyFactory.createKey("TrackId", session.track.tid)
-    val itemEntity = new Entity("PracticeSessionListItem", itemKey)
+    val itemEntity = new Entity("PracticeSessionDay", itemKey)
     PracticeDatastoreDao.practiceSessionDayToEntity(session, itemEntity)
     itemEntity
   }
@@ -134,8 +134,11 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : 
         practiceDay
       case Some(day) => 
         findPracticeDay(tid, transponder, day).orElse {
+            println("Looking for more results for day " + day)
             // When results are older, update if data is missing:
             val practiceDay = websiteDao.getTransponderSessions(tid, transponder, validator)
+            println(" -- driver: " + practiceDay.driver)
+            println(" -- track: " + practiceDay.track)
             updateData(practiceDay.track, practiceDay.driver)
             findPracticeDay(tid, transponder, day)
         }.getOrElse(
@@ -149,7 +152,9 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : 
    */
   def updateData(track : TrackStatus, driver : Driver) {
     val sessionDays = allLapsWebsiteDao.getAllPracticeSessionDaysForDriver(track, driver)
+    println("Found " + sessionDays.size + " days for driver: " + driver)
     sessionDays.map(storeOrUpdate(_))
+    sessionDays.map(_.toPracticeSessionListItem).map(storeOrUpdate(track.tid, _))
   }
   
   def findPracticeDay(tid : Long, transponder : Long, day : Day) : Option[PracticeSessionDay] = {
@@ -157,7 +162,7 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : 
     val tidIs = new FilterPredicate("tid", FilterOperator.EQUAL, tid)
     val transponderIs = new FilterPredicate("driver.transponder.number", FilterOperator.EQUAL, transponder);
     val filter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(tidIs, transponderIs))
-    val query = new Query("PracticeSessionListItem", trackKey).setFilter(filter).addSort("day", Query.SortDirection.ASCENDING)
+    val query = new Query("PracticeSessionDay", trackKey).setFilter(filter)//.addSort("day", Query.SortDirection.ASCENDING)
     val items = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(200)).toList
     items.find(i=>Day(i.xml\\"day") == day).map(i=>PracticeDatastoreDao.entityToPracticeSessionDay(i)._2)
   }
@@ -174,8 +179,10 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : 
     val entity = items.find(i=>PracticeDatastoreDao.isOnDay(i, session.day))
     entity match {
       case Some(e) => 
+        println("Updating session day entity: " + session.day)
         datastore.put(PracticeDatastoreDao.practiceSessionDayToEntity(session, e))
       case None =>
+        println("Creating new session day entity: " + session.day)
         datastore.put(PracticeDatastoreDao.practiceSessionDayToEntity(session))
     }
   }

@@ -119,4 +119,7 @@ case class PracticeSessionDay(day : Day, track : TrackStatus, driver : Driver, s
   override def id = day.toString + "_" + track.tid + "_" + driver.transponder.number
   def sessionsNewestFirst() = sessions.sortWith((t1, t2)=>t1.startDate.after(t2.startDate))
   def toXml = <practiceSessionDay>{day.toXml}{track.toXml}{driver.toXml}{sessions.map(_.toXml)}</practiceSessionDay>
-} 
+  
+  def toPracticeSessionListItem() = 
+    PracticeSessionListItem(driver, sessions.head.startDate, day, sessions.map(_.laps.size).sum)
+}

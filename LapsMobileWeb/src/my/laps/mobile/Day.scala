@@ -17,7 +17,9 @@ object Day {
     cal.setTimeZone(tz)
     cal.setTime(date)
     
-    Day(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+    val d = Day(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+    println(d)
+    d
   }
   
   def apply(ns : NodeSeq) : Day = apply(ns.text)

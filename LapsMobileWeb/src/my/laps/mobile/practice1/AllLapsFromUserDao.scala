@@ -24,7 +24,8 @@ class AllLapsFromUserOnTrackDao(urlBase : String, conf : MylapsConf = new Mylaps
   
   def getAllPracticeSessionDaysForDriver(trackStatus : TrackStatus, driver : Driver) : List[PracticeSessionDay] = {
     val sessions = getAllPractiseSessionsForTransponderOnTrack(trackStatus.tid, driver.transponder)
-    sessions.groupBy(s=>s.getDay(UserConf.TimeZoneFI, UserConf.FI))
+    sessions.filter(_.laps.size > 0)
+      .groupBy(s=>s.getDay(UserConf.TimeZoneFI, UserConf.FI))
       .map(p=>PracticeSessionDay(p._1, trackStatus, driver, p._2))
       .toList
   }

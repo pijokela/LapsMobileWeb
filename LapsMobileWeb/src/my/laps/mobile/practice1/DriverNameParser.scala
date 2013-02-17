@@ -4,7 +4,11 @@ class DriverNameParser {
   /** <span class="hide">Laptimes for Name of Driver</span> */
   private val nameRegex = "<span class=\"hide\">Laptimes for ((?:\\p{L}|\\s|\\d|[\\.;:'])+)</span>".r
   
-  def parse(line : String) = 
-    nameRegex.findFirstMatchIn(line).map(_.group(1))
+  val transponderNumberStart = "Transponder "
+  
+  def parse(line : String) = {
+    val nameOnPage = nameRegex.findFirstMatchIn(line).map(_.group(1))
+    nameOnPage.map(n=>if(n.startsWith(transponderNumberStart))n.substring(transponderNumberStart.length()) else n)
+  }
 }
 
