@@ -59,6 +59,12 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
         out.println(html.header)
         out.println(html.errorPage)
         out.println(html.footer)
+      case e : java.lang.IllegalArgumentException => 
+        val out = resp.getWriter()
+        val html = new Html(UserConf.createWithDefaults(timeService)) // Create default user so that creation will not fail.
+        out.println(html.header)
+        out.println(html.illegalArgumentPage)
+        out.println(html.footer)
     }
   }
   

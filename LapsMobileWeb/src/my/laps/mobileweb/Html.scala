@@ -43,6 +43,19 @@ class Html(val conf : UserConf) {
 	  </p>
 	  """
 	  
+	val illegalArgumentPage = """
+	  <h1>Data You requested is not available, Sorry</h1>
+	  <p>
+	    Data for the page you requested is not available. There is
+	    something wrong in m-laps or the data from MyLaps. Trying
+	    again or refreshing the page probably won't here with this
+	    one. Sorry.
+	  </p>
+	  <p>
+	    <a href="http://www.mylaps.com/practice/index.jsp">You can try using the Mylaps practice server directly</a>
+	  </p>
+	  """
+	  
 	def selectTrackPage(tid : Long, validator : LapValidator, conf : UserConf) = """
 	    <h1>Select Track</h1>
 	    Select the track to get practice results from. Use the main website to find the track id.
