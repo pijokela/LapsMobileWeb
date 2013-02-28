@@ -12,6 +12,7 @@ import my.laps.mobile.RealTimeService
 import my.laps.mobileweb.HttpServletRequestParsing.toMyRequest
 import my.laps.mobileweb.HttpServletRequestParsing.toMyResponse
 import my.laps.mobile.practice1.AllLapsFromUserOnTrackDao
+import my.laps.mobile.datastore.TrackStatusDao
 
 class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   
@@ -19,7 +20,8 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
   val mylapsConf = new MylapsConf()
   val webDao = new PracticeWebsiteDao("http://www.mylaps.com", mylapsConf)
   val lapsFromUserDao = new AllLapsFromUserOnTrackDao("http://www.mylaps.com", mylapsConf)
-  val dao = new PracticeDatastoreDao(webDao, lapsFromUserDao)
+  val trackStatusDao = new TrackStatusDao(webDao)
+  val dao = new PracticeDatastoreDao(webDao, trackStatusDao, lapsFromUserDao)
   val timeService = new RealTimeService
   
   /**
@@ -82,8 +84,9 @@ class LapsMobileServlet extends HttpServlet with HttpServletRequestParsing {
     val pageContent = (trackId, tp) match {
       case (None, None) => {
 		val tid = getTidFromCookie(req)
+		val recentTracks = trackStatusDao.getRecentTracks
 		// Output track selection page:
-		html.selectTrackPage(tid, validator, conf)
+		html.selectTrackPage(tid, recentTracks, validator, conf)
       }
       case (Some(tid), None) => {
 		putTidToCookie(tid, resp)

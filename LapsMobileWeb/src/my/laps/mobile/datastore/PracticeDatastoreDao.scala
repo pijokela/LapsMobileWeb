@@ -2,34 +2,30 @@ package my.laps.mobile.datastore
 
 import my.laps.mobile.practice1.PracticeWebsiteDao
 import my.laps.mobile.TrackPracticeDay
-import com.google.appengine.api.datastore.DatastoreServiceFactory
-import com.google.appengine.api.datastore.Entity
-import com.google.appengine.api.datastore.Text
-import my.laps.mobile.PracticeSessionListItem
-import com.google.appengine.api.datastore.KeyFactory
-import my.laps.mobile.PracticeSessionListItem
-import my.laps.mobile.PracticeSessionListItem
 import my.laps.mobile.Driver
 import my.laps.mobile.Transponder
-import NiceEntity._
-import java.util.Date
-import my.laps.mobile.TrackPracticeDay
-import com.google.appengine.api.datastore.Query
-import com.google.appengine.api.datastore.FetchOptions
-import my.laps.mobile.PracticeSessionListItem
-import com.google.appengine.api.datastore.Query.FilterPredicate
-import com.google.appengine.api.datastore.Query.FilterOperator
-import com.google.appengine.api.datastore.Query.CompositeFilterOperator
+import my.laps.mobile.practice1.AllLapsFromUserOnTrackDao
+import my.laps.mobile.TrackStatus
 import my.laps.mobile.Day
 import my.laps.mobile.PracticeSessionDay
 import my.laps.mobile.LapValidator
-import my.laps.mobile.PracticeSessionDay
+import my.laps.mobile.TrackPracticeDay
+import my.laps.mobile.PracticeSessionListItem
+import NiceEntity._
+import com.google.appengine.api.datastore.DatastoreServiceFactory
+import com.google.appengine.api.datastore.Entity
+import com.google.appengine.api.datastore.Text
+import com.google.appengine.api.datastore.KeyFactory
+import com.google.appengine.api.datastore.Query
+import com.google.appengine.api.datastore.FetchOptions
+import com.google.appengine.api.datastore.Query.FilterPredicate
+import com.google.appengine.api.datastore.Query.FilterOperator
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator
+import com.google.appengine.api.datastore.Query.CompositeFilter
 import scala.xml.XML
 import scala.xml.Elem
-import com.google.appengine.api.datastore.Query.CompositeFilter
 import java.util.Arrays
-import my.laps.mobile.practice1.AllLapsFromUserOnTrackDao
-import my.laps.mobile.TrackStatus
+import java.util.Date
 
 
 object PracticeDatastoreDao {
@@ -96,7 +92,7 @@ object PracticeDatastoreDao {
 /**
  * Dao class contains interface methods for the servlets.
  */
-class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : AllLapsFromUserOnTrackDao) {
+class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, trackStatusDao : TrackStatusDao, allLapsWebsiteDao : AllLapsFromUserOnTrackDao) {
   
   val datastore = DatastoreServiceFactory.getDatastoreService()
   
@@ -163,8 +159,12 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : 
     val transponderIs = new FilterPredicate("driver.transponder.number", FilterOperator.EQUAL, transponder);
     val filter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(tidIs, transponderIs))
     val query = new Query("PracticeSessionDay", trackKey).setFilter(filter)//.addSort("day", Query.SortDirection.ASCENDING)
-    val items = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(200)).toList
-    items.find(i=>Day(i.xml\\"day") == day).map(i=>PracticeDatastoreDao.entityToPracticeSessionDay(i)._2)
+    val items = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(1000)).toList
+    val practiceSesssionDaoOption = 
+      items.find(i=>Day(i.xml\\"day") == day).map(i=>PracticeDatastoreDao.entityToPracticeSessionDay(i)._2)
+    // Since the session day is coming from datastore, let's update the 
+    // track data from the newest status we have for that track:
+    practiceSesssionDaoOption.map(_.copy(track = trackStatusDao.getTrackStatus(tid)))
   }
   
   
@@ -185,6 +185,9 @@ class PracticeDatastoreDao(websiteDao : PracticeWebsiteDao, allLapsWebsiteDao : 
         println("Creating new session day entity: " + session.day)
         datastore.put(PracticeDatastoreDao.practiceSessionDayToEntity(session))
     }
+    
+    // Store track to datastore:
+    trackStatusDao.storeOrUpdate(session.track)
   }
   
   

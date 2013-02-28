@@ -57,8 +57,10 @@ class Html(val conf : UserConf) {
 	  </p>
 	  """
 	  
-	def selectTrackPage(tid : Long, validator : LapValidator, conf : UserConf) = """
+	def selectTrackPage(tid : Long, recentTracks : List[TrackStatus], validator : LapValidator, conf : UserConf) = """
 	    <h1>Select Track</h1>
+	    <ul>""" + recentTracks.map(t=>"<a href='?tid=" + t.tid + "'>" + t.name + " (" + t.tid + ")</a>").mkString("<li>", "</li><li>", "</li>") + """</ul>
+	    <h2>Input track id for new track</h2>
 	    Select the track to get practice results from. Use the main website to find the track id.
 	    <form method="GET">
 	      <input type="text" name="tid" value="""" + tid + """" size="4" maxlength="4" />
