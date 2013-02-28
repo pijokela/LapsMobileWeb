@@ -11,6 +11,7 @@ import my.laps.mobile.PracticeSessionDay
 import my.laps.mobile.PracticeSessionListItem
 import my.laps.mobile.TrackPracticeDay
 import my.laps.mobile.TrackStatus
+import my.laps.mobile.stats._
 
 class Html(val conf : UserConf) {
 	val header = """<!DOCTYPE html>
@@ -142,6 +143,19 @@ class Html(val conf : UserConf) {
 	    case (false, None) => """<li class="valid lap slower" style="border-right-width: """ + lap.scaledLength(0,10) + """em;">""" + conf.lapDuration(lap.lap) + "</li>\n"
 	  }
 	
+	def stats : List[SessionStats] = 
+	  new SetOfThreeBestLaps(conf) :: 
+	  Nil
+	  
+	def printStats(session : PracticeSession) = {
+	  val statStrings = for (s <- stats) yield {
+	    "<li>" + s.title + "</li>" + 
+	    s.nameValuePairs(session).map(p=> p._1 + ": " + p._2).mkString("<ul><li>", "</li><li>", "</li></ul>")
+	  }
+	  statStrings.mkString("\n")
+	}
+
+	
 	def sessionLapSection(session : PracticeSession) = 
 	  """<h1>Session """ + conf.formatTime(session.startDate) + """</h1>""" + 
 	  "<ul><li>Total laps: " + session.laps.size + "</li>" +
@@ -154,6 +168,7 @@ class Html(val conf : UserConf) {
 	  "<li>Average lap: " + conf.lapDuration(session.averageMsValidLaps) + "</li>" +
 	  "<li>Slowest lap: " + conf.lapDuration(session.worstLapFromValidLaps) + "</li>" +
 	  "</ul>" + 
+	  printStats(session) +
 	  "</ul>" + 
 	  """<h2>Session laps</h2>
 	  <div class="hiddenLapList"><span class="showButton">... show ...</span>
