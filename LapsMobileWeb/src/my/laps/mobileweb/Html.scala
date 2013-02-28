@@ -26,7 +26,7 @@ class Html(val conf : UserConf) {
 	  """
 	  
 	val footer = """
-	    <h1><a href="/"><img src="/logo60.png" class="icon" alt="Front page" title="Front page"></img></a> <a href="?">Change track</a></h1>
+	    <h1><a href="/"><img src="/logo60.png" class="icon" alt="Front page" title="Front page"></img></a> <a href="/app?">Change track</a> <a href="/config"><img src="/config60.png" class="icon" alt="Configuration" title="Change configuration options"></img></a></h1>
         <script src="scripts.js"></script>
 	    </body>
 	  </html>
@@ -57,7 +57,7 @@ class Html(val conf : UserConf) {
 	  </p>
 	  """
 	  
-	def selectTrackPage(tid : Long, recentTracks : List[TrackStatus], validator : LapValidator, conf : UserConf) = """
+	def selectTrackPage(tid : Long, recentTracks : List[TrackStatus]) = """
 	    <h1>Select Track</h1>
 	    <ul>""" + recentTracks.map(t=>"<a href='?tid=" + t.tid + "'>" + t.name + " (" + t.tid + ")</a>").mkString("<li>", "</li><li>", "</li>") + """</ul>
 	    <h2>Input track id for new track</h2>
@@ -66,6 +66,9 @@ class Html(val conf : UserConf) {
 	      <input type="text" name="tid" value="""" + tid + """" size="4" maxlength="4" />
 	      <input type="submit" value="Select Track" />
 	    </form>
+	  """
+	  
+	def showConfigOptionsPage(validator : LapValidator, conf : UserConf) = """
 	    <h1>Configure lap validation</h1>
   	    <form method="POST">
 	    <p>Currently the shortest allowed lap is """ + validator.minMs + 
