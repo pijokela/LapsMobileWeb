@@ -165,7 +165,7 @@ class Html(val conf : UserConf) {
 	
 	def sessionLapSection(session : PracticeSession) = 
 	  """<h1>Session """ + conf.formatTime(session.startDate) + """</h1>""" + 
-	  "<ul><li>Valid laps: " + session.validLaps.size + " (" + session.laps.size + " in total)</li>" +
+	  "<ul><li>Valid laps: " + session.validLaps.size + " (" + session.laps.size + " laps in total)</li>" +
 	  "<ul><li>Best lap: " + conf.lapDuration(session.bestLapFromValidLaps) + " (" + conf.lapDuration(session.bestLapFromAllLaps) + ")</li>" +
 	  "<li>Average lap: " + conf.lapDuration(session.averageMsValidLaps) + " (" + conf.lapDuration(session.averageMsAllLaps) + ")</li>" +
 	  "<li>Slowest lap: " + conf.lapDuration(session.worstLapFromValidLaps) + " (" + conf.lapDuration(session.worstLapFromAllLaps) + ")</li>" +

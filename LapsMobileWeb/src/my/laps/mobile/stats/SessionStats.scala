@@ -69,7 +69,7 @@ class BestXMinRun(conf : UserConf, minutes : Int) extends SessionStats {
   def nameValuePairs(session : PracticeSession) : List[(String, Elem)] = {
     val res : (Trio, Long) = calculateBestResult(session.validLaps)
     val t = res._1
-    ("Laps", <span>{t.laps.size}; from {t.startLap} to {t.endLap}</span>) ::
+    ("Laps", <span>{t.laps.size} - laps {t.startLap + 1} to {t.endLap + 1}</span>) ::
     ("Time", <span>{conf.lapDuration(t.duration)}</span>) ::
     ("Best in set", <span>{conf.lapDuration(t.bestLapDuration)} with {conf.lapDuration(t.averageDuration)} average.</span>) ::
     Nil
