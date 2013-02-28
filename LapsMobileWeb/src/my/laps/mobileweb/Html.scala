@@ -150,6 +150,8 @@ class Html(val conf : UserConf) {
 	
 	def stats : List[SessionStats] = 
 	  new SetOfThreeBestLaps(conf) :: 
+	  new BestXMinRun(conf, 5) :: 
+//	  new BestXMinRun(conf, 8) :: 
 	  Nil
 	  
 	def printStats(session : PracticeSession) = {
@@ -163,15 +165,10 @@ class Html(val conf : UserConf) {
 	
 	def sessionLapSection(session : PracticeSession) = 
 	  """<h1>Session """ + conf.formatTime(session.startDate) + """</h1>""" + 
-	  "<ul><li>Total laps: " + session.laps.size + "</li>" +
-	  "<ul><li>Best lap: " + conf.lapDuration(session.bestLapFromAllLaps) + "</li>" +
-	  "<li>Average lap: " + conf.lapDuration(session.averageMsAllLaps) + "</li>" +
-	  "<li>Slowest lap: " + conf.lapDuration(session.worstLapFromAllLaps) + "</li>" +
-	  "</ul>" + 
-	  "<li>Valid laps: " + session.validLaps.size + "</li>" +
-	  "<ul><li>Best lap: " + conf.lapDuration(session.bestLapFromValidLaps) + "</li>" +
-	  "<li>Average lap: " + conf.lapDuration(session.averageMsValidLaps) + "</li>" +
-	  "<li>Slowest lap: " + conf.lapDuration(session.worstLapFromValidLaps) + "</li>" +
+	  "<ul><li>Valid laps: " + session.validLaps.size + " (" + session.laps.size + " in total)</li>" +
+	  "<ul><li>Best lap: " + conf.lapDuration(session.bestLapFromValidLaps) + " (" + conf.lapDuration(session.bestLapFromAllLaps) + ")</li>" +
+	  "<li>Average lap: " + conf.lapDuration(session.averageMsValidLaps) + " (" + conf.lapDuration(session.averageMsAllLaps) + ")</li>" +
+	  "<li>Slowest lap: " + conf.lapDuration(session.worstLapFromValidLaps) + " (" + conf.lapDuration(session.worstLapFromAllLaps) + ")</li>" +
 	  "</ul>" + 
 	  printStats(session) +
 	  "</ul>" + 

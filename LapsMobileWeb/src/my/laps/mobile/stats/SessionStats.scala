@@ -17,11 +17,13 @@ trait SessionStats {
   def nameValuePairs(session : PracticeSession) : List[(String, Elem)]
 }
 
+
+
 case class Trio(startLap : Int, laps : List[Lap]) {
   val duration = laps.map(_.durationMs).sum
-  def averageDuration = duration / 3.0
+  def averageDuration = duration * 1.0 / laps.size
   def bestLapDuration = laps.sortWith(_.durationMs < _.durationMs).head.durationMs
-  def endLap = startLap + 2
+  def endLap = startLap + laps.size - 1
   
   def chooseFaster(other : Option[Trio]) : Trio =
     List(Some(this), other).flatten.sortWith(_.duration < _.duration).head
@@ -60,3 +62,55 @@ class SetOfThreeBestLaps(conf : UserConf) extends SessionStats {
     }
     
 }
+
+
+class BestXMinRun(conf : UserConf, minutes : Int) extends SessionStats {
+  val title = "Best " + minutes + " minutes result"
+  def nameValuePairs(session : PracticeSession) : List[(String, Elem)] = {
+    val res : (Trio, Long) = calculateBestResult(session.validLaps)
+    val t = res._1
+    ("Laps", <span>{t.laps.size}; from {t.startLap} to {t.endLap}</span>) ::
+    ("Time", <span>{conf.lapDuration(t.duration)}</span>) ::
+    ("Best in set", <span>{conf.lapDuration(t.bestLapDuration)} with {conf.lapDuration(t.averageDuration)} average.</span>) ::
+    Nil
+  }
+  
+  def calculateBestResult(laps : List[Lap], startLap : Int = 0) : (Trio, Long) = {
+    val startValue = minutes * 60 * 1000 // Full time, no laps
+    val result = fillTimeWithLaps(startValue, laps)
+    val trio = Trio(startLap, result._2)
+    // If all the time has not been used, going 
+    // forward in laps will not create better results:
+    if (laps.isEmpty) {
+      (trio, result._1)
+    } else {
+      val nextResult = calculateBestResult(laps.tail, startLap + 1)
+      returnBetter((trio, result._1), nextResult)
+    }
+  }
+  
+  private def returnBetter(rhs : (Trio, Long), lhs : (Trio, Long)) =
+    (rhs, lhs) match {
+    case ((t1, ms1), (t2, ms2)) if t1.laps.size > t2.laps.size => (t1, ms1)
+    case ((t1, ms1), (t2, ms2)) if t1.laps.size < t2.laps.size => (t2, ms2)
+    case ((t1, ms1), (t2, ms2)) if ms1 >= ms2 => (t1, ms1)
+    case ((t1, ms1), (t2, ms2)) if ms1 < ms2 => (t2, ms2)
+    }
+
+  
+  /**
+   * @return Time left in ms, laps.
+   */
+  def fillTimeWithLaps(timeLeft : Long, laps : List[Lap]) : (Long, List[Lap]) = 
+    laps match {
+    case l :: moreLaps => 
+      if (timeLeft - l.durationMs <= 0) { 
+        (timeLeft - l.durationMs, l :: Nil) 
+      } else {
+        val result = fillTimeWithLaps(timeLeft - l.durationMs, moreLaps)
+        (result._1, l :: result._2)
+      }
+    case Nil => (timeLeft, Nil)
+    }
+}
+
