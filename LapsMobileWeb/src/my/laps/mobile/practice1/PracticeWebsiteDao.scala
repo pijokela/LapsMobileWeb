@@ -50,10 +50,13 @@ class PracticeWebsiteDao(urlBase : String, conf : MylapsConf = new MylapsConf())
   
   def getTransponderSessions(tid : Long, transponder : Long, validator : LapValidator) : PracticeSessionDay = {
     val urlString = url(tid, transponder)
+    println("Loading sessions from url: " + urlString)
     val source = sourceFromUrlString(urlString)
     val track = getTrackStatus(tid)
+    println("Found track: " + track)
     val parser = new PracticeSessionParser(track, source, validator, conf)
     source.close
+    println("Closed source.")
     parser.parseTrackPracticeDay
   }
   

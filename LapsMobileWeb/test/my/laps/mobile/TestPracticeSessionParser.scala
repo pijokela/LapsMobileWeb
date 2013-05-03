@@ -6,15 +6,15 @@ import org.junit.Test
 import org.junit.Assert
 import my.laps.mobile.practice1.PracticeSessionParser
 import my.laps.mobile.practice1.DriverNameParser
+import java.util.Date
 
 
 class Utf8DriverName {
-  val so = Source.fromFile("test/my/laps/mobile/utf8-driver-name.txt")
   val parser = new DriverNameParser()
   
   @Test
   def driverFoundFromLine() {
-    val line = """	<h1><img src="http://www.mylaps.com/textimage/headerDark/h1/Laptimes%2Bfor%2BPetri%2BNiemel%25C3%25A4.gif" alt="Laptimes for Petri Niemelä"/><span class="hide">Laptimes for Petri Niemelä</span></h1>"""
+    val line = """	<h2>Laptimes for Petri Niemelä</h2>"""
     val m = parser.parse(line)
     Assert.assertTrue(m != None)
     Assert.assertEquals("Petri Niemelä", m.get)
@@ -22,19 +22,10 @@ class Utf8DriverName {
   
   @Test
   def driverFoundFromLineWithDots() {
-    val line = """	<h1><img src="http://www.mylaps.com/textimage/headerDark/h1/Laptimes%2Bfor%2BPetri%2BNiemel%25C3%25A4.gif" alt="Laptimes for Petri Niemelä"/><span class="hide">Laptimes for N.O.X.</span></h1>"""
+    val line = """	<h2>Laptimes for N.O.X.</h2>"""
     val m = parser.parse(line)
     Assert.assertTrue(m != None)
     Assert.assertEquals("N.O.X.", m.get)
-  }
-  
-  @Test
-  def driverFound() {
-    val track = TrackStatus(true, "name", "location", 1429, Length(70, "m"))
-    val parser = new PracticeSessionParser(track, so, new LapValidator(1000, 100000), new MylapsConf())
-    val r = parser.parseTrackPracticeDay
-    Assert.assertNotNull(r)
-    println(r)
   }
 }
 

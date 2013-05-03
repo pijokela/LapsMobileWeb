@@ -26,7 +26,7 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
   
   lazy val parsePracticeSesssions : List[PracticeSession] = {
     val tables = findLapTables(lines)
-    tables.map(parsePracticeSession(_))
+    tables.map(t=>parsePracticeSession(t.date, t.results))
   }
   
   /** <strong>Transponder</strong> */
@@ -49,7 +49,7 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
   }
   
   /** <span class="hide">Results of 29 Dec 2012</span> */
-  private val dateRegex = "<span class=\"hide\">Results of ([0-9A-Za-z ]+)</span>".r
+  private val dateRegex = "<h3 class=\"floatleft\">Results of ([0-9A-Za-z ]+)</h3>".r
   
   lazy val parseDate = {
     val dateLine = lines.find(l=>dateRegex.findFirstIn(l).isDefined).getOrElse(throw new IllegalArgumentException("Could not find date from web page."))
@@ -61,21 +61,24 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
   private val lapTableStartRegex = "summary=\"Practice lap times\"".r
   private val lapTableEndRegex = "</table>".r
 
+  case class DateAndResultsTable(date : Date, results : List[String])
+  
   /**
    * Parse the practice session lap tables from the web page. The tables can be parsed as XML.
    */
-  def findLapTables(lines : List[String]) : List[List[String]] = {
+  def findLapTables(lines : List[String]) : List[DateAndResultsTable] = {
     val headerIndex = lines.indexWhere(l=>lapTableStartRegex.findFirstIn(l).isDefined)
     if (headerIndex == -1) {
       Nil
     } else {
+      val date = parseSessionStartDate(lines.drop(headerIndex - 2))
       val tableAndEnd = lines.drop(headerIndex)
       val table = tableAndEnd.takeWhile(line=>(!lapTableEndRegex.findFirstIn(line).isDefined))
-      table :: findLapTables(tableAndEnd.drop(table.size))
+      DateAndResultsTable(date, table) :: findLapTables(tableAndEnd.drop(table.size))
     }
   }
   
-  private val sessionStartDateRegex = "<caption>Session \\d+ started at (\\d\\d:\\d\\d:\\d\\d) <a id=\"[A-Za-z0-9 ]+\"></a></caption>".r
+  private val sessionStartDateRegex = "<h4>Session.*(\\d\\d:\\d\\d:\\d\\d).*</h4>".r
   def parseSessionStartDate(lines : List[String]) = {
     val dateLine = lines.find(l=>sessionStartDateRegex.findFirstIn(l).isDefined).getOrElse(throw new IllegalArgumentException("Could not find start date from session."))
     val m = sessionStartDateRegex.findFirstMatchIn(dateLine).get
@@ -93,8 +96,7 @@ class PracticeSessionParser(track : TrackStatus, source : Source, validator : La
     doubleMsLaps.map(d=>Lap(d.toLong))
   }
   
-  def parsePracticeSession(tableLines : List[String]) : PracticeSession = {
-    val startTime = parseSessionStartDate(tableLines)
+  def parsePracticeSession(startTime : Date, tableLines : List[String]) : PracticeSession = {
     val laps = parseLapTimes(tableLines)
     PracticeSession(startTime, laps, validator)
   }

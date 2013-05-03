@@ -15,7 +15,7 @@ import my.laps.mobile.TrackStatus
 
 
 /**
- * http://www.mylaps.com/practice/GetTXTFile.jsp?transponder=5916939&tid=1429
+ * http://practice.mylaps.com/practice/GetTXTFile.jsp?transponder=5916939&tid=1429
  */
 class AllLapsFromUserOnTrackDao(urlBase : String, conf : MylapsConf = new MylapsConf()) {
   private def url(tid : Long, tp : Transponder) = urlBase + "/practice/GetTXTFile.jsp?transponder=" + tp.number + "&tid=" + tid
@@ -49,6 +49,7 @@ class AllLapsFromUserOnTrackDao(urlBase : String, conf : MylapsConf = new Mylaps
 class AllPracticeSessionsParser(source : Source, conf : MylapsConf) {
   
   def extractPracticeSessions(lines : List[String]) : List[PracticeSession] = {
+    println("Extracting practise sessions from " + lines.length + " lines of txt file.")
     val startIndex = lines.indexWhere(_.contains("First passing"))
     if (startIndex == -1) return Nil
     
@@ -81,6 +82,7 @@ class AllPracticeSessionsParser(source : Source, conf : MylapsConf) {
   def parsePracticeSessions() : List[PracticeSession] = {
     val linesWithTimes = source.getLines.drop(1).toList
     val r = extractPracticeSessions(linesWithTimes)
+    println("... extracted " + r.length + " sessions.")
     r
   }
 }

@@ -2,7 +2,7 @@ package my.laps.mobile.practice1
 
 class DriverNameParser {
   /** <span class="hide">Laptimes for Name of Driver</span> */
-  private val nameRegex = "<span class=\"hide\">Laptimes for ((?:\\p{L}|\\s|\\d|[\\.;:'])+)</span>".r
+  private val nameRegex = "<h2>Laptimes for ((?:\\p{L}|\\s|\\d|[\\.;:'])+)</h2>".r
   
   val transponderNumberStart = "Transponder "
   
