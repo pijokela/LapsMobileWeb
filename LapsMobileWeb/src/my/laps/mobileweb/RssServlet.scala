@@ -16,8 +16,8 @@ import my.laps.mobile.datastore.TrackStatusDao
 class RssServlet extends HttpServlet with HttpServletRequestParsing {
 
   val mylapsConf = new MylapsConf()
-  val webDao = new PracticeWebsiteDao("http://www.mylaps.com", mylapsConf)
-  val lapsFromUserDao = new AllLapsFromUserOnTrackDao("http://www.mylaps.com", mylapsConf)
+  val webDao = new PracticeWebsiteDao("http://practice.mylaps.com", mylapsConf)
+  val lapsFromUserDao = new AllLapsFromUserOnTrackDao("http://practice.mylaps.com", mylapsConf)
   val trackStatusDao = new TrackStatusDao(webDao)
   val dao = new PracticeDatastoreDao(webDao, trackStatusDao, lapsFromUserDao)
   val timeService = new RealTimeService

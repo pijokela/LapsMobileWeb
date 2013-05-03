@@ -51,7 +51,7 @@ class TrackStatusParser(source : Source, conf : MylapsConf) {
   }
   
   lazy val trackSection = lines
-		  .dropWhile(!_.trim.equals("<table>"))
+		  .dropWhile(!_.trim.contains("<table>"))
 		  .takeWhile(!_.trim.equals("</div>"))
   
   /**
@@ -101,12 +101,11 @@ class TrackStatusParser(source : Source, conf : MylapsConf) {
   }
 
 		  
-  lazy val parseTrackPracticeDay : TrackPracticeDay = {
+  lazy val parseTrackPracticeDay : TrackPracticeDay =
     TrackPracticeDay(
         parseTrackStatus,
         parsePracticeSessions()
     )
-  }
   
   /**
    * Parse a TR with two TD elements to a tuple.
