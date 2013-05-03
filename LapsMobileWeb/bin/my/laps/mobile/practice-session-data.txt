@@ -1,490 +1,166 @@
 
 
 
-	
 
 
 
+<!doctype html>
+    <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+    <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+    <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+        <head>
+            <meta charset="utf-8">
+            <title>TamUA:n mattorata on MyLaps Practice</title>
+            <meta name="description" content="MyLaps Practice offers practice lap times to personal transponder owners">
+            <meta name="author" content="MYLAPS Sports Timing">
+            <meta name="viewport" content="width=device-width">
 
+            <link rel="stylesheet" href="/css/reset.css">
+            <link rel="stylesheet" href="/css/start/jquery-ui.custom.min.css" />
+            <link rel="stylesheet" href="/css/style.css">
+            <link rel="stylesheet" href="/css/forms.css">
+            <link rel="stylesheet" href="/css/practice.css">
 
-
-
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="eng" lang="eng">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-	<meta name="author" content="MYLAPS" />
-	<meta name="MSSmartTagsPreventParsing" content="true" />
-	<meta name="description" content="The MYLAPS timing system offers lap times to all racers that own a personal MYLAPS transponder." />
-	<meta name="keywords" content="mylaps, timekeeping, amb, identification, timing, racing, sport, transponder, decoder, lap times, laptimes, results, race, tnetx, practice" />
-	<meta name="siteaccess" content="results" />
-
-	<link rel="stylesheet" type="text/css" href="/styles/mylaps-reset.css" media="all" />
-	<link rel="stylesheet" type="text/css" href="/styles/mylaps-grid.css" media="screen, projection, print" />
-	<link rel="stylesheet" type="text/css" href="http://www.mylaps.com/extension/amb/design/site/stylesheets/style.css" media="screen, projection, print" />
-	<link rel="stylesheet" type="text/css" href="/styles/mylaps-results.css" media="screen, projection, print" />
-	<link rel="stylesheet" type="text/css" href="/styles/print.css" media="print" />
-	<link rel="stylesheet" type="text/css" href="/styles/jquery-ui.css" media="screen, projection" />
-
-	<script language="JavaScript" type="text/javascript" src="http://www.mylaps.com/extension/amb/design/site/javascript/jquery-1.2.6.min.js"></script>
-	<script language="JavaScript" type="text/javascript" src="http://www.mylaps.com/extension/amb/design/site/javascript/jquery.tools.min.js"></script>
-	<script language="JavaScript" type="text/javascript" src="http://www.mylaps.com/extension/amb/design/site/javascript/jquery.bgiframe.min.js"></script>
-	<script language="JavaScript" type="text/javascript" src="http://www.mylaps.com/extension/amb/design/site/javascript/common.js"></script>
-	<script language="JavaScript" type="text/javascript" src="http://www.mylaps.com/extension/amb/design/site/javascript/amb_common.js"></script>
-	<script language="JavaScript" type="text/javascript" src="http://www.mylaps.com/extension/amb/design/site/javascript/sportSelector.js"></script>
-	<script language="JavaScript" type="text/javascript" src="http://www.mylaps.com/extension/amb/design/site/javascript/jquery.url.packed.js"></script>
-
-	<!--[if lt ie 7]>
-	<link href="/styles/ie6.css" type="text/css" rel="stylesheet" media="screen" />
-	<![endif]-->
-
-	<!--[if ie 7]>
-	<link href="/styles/ie7.css" type="text/css" rel="stylesheet" media="screen" />
-	<![endif]-->
-
-	<link rel="icon" type="image/x-icon" href="http://www.mylaps.com/extension/amb/design/site/images/favicon.ico" />
-	<link rel="Shortcut icon" type="image/x-icon" href="http://www.mylaps.com/extension/amb/design/site/images/favicon.ico" />
-	<link rel="alternate" href="rss/rss.jsp" type="application/rss+xml" title="Mylaps.com Results feeds" />
-
-	
-        
-    <!-- Revision: $Rev$ -->
-
-    <title>MYLAPS Results</title>
-</head>
-<body>
-	<div class="hide">
-		<p class="nonPrint"><a href="#container">Skip navigation</a></p>
-		<p><img src="http://www.mylaps.com/extension/amb/design/site/images/print_logo.gif" alt="Company [print-logo]" /></p>
-	</div>
-	<div id="wrapper">
-		<div id="header" class="wrapperBlock">
-			<ul id="siteSwitch">
-	<li class="active"><a href="/index.jsp"><img class="imageHover" src="http://www.mylaps.com/textimage/headerTabActive/YOUR%2520RESULTS.gif" alt="YOUR RESULTS" /><span class="hide">YOUR RESULTS</span></a></li>
-	<li><a href="javascript:void(0)" onclick="showSportSelector();"><img class="imageHover" src="http://www.mylaps.com/textimage/headerTab/PRODUCTS.gif" alt="PRODUCTS" /><span class="hide">PRODUCTS</span></a></li>
-	<li><a href="http://www.mylaps.com/index.php/detect/Websites/corporate/news"><img class="imageHover" src="http://www.mylaps.com/textimage/headerTab/COMPANY%2520%2526amp%253B%2520NEWS.gif" alt="COMPANY &amp; NEWS" /><span class="hide">COMPANY &amp; NEWS</span></a></li>
-	</ul>
-			<p class="logo nonPrint">
-				<a href="http://www.mylaps.com/index.php/detect/Websites/home" title="Back to homepage" accesskey="h">
-				<img src="http://www.mylaps.com/extension/amb/design/site/images/logoEmpty.gif" alt="MyLaps [logo]" width="200" height="47" /></a>
-			</p>
-			<ul class="mainNav superFish">
-				<li>
-					<a href="/index.jsp" title="MYLAPS Results" accesskey="0">
-					<img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/h1/Event Results.gif" alt="Event Results"/><span class="hide">Event Results</span></a>
-					<span class="divider"><img src="http://www.mylaps.com/extension/amb/design/site/images/topmenu_divider.gif" alt="/" /></span>
-				</li>
-				<li>
-					<a href="http://practice2.mylaps.com" title="Practice Results">
-					<img src="http://www.mylaps.com/textimage/hover/headerDark/h1/Practice Results.gif" alt="Practice Results"/><span class="hide">Practice Results</span></a>
-					<span class="divider"><img src="http://www.mylaps.com/extension/amb/design/site/images/topmenu_divider.gif" alt="/" /></span>
-				</li>
-				<li>
-					<a href="/event/upcoming.jsp" title="Upcoming Events">
-					<img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/h1/Upcoming Events.gif" alt="Upcoming Events"/><span class="hide">Upcoming Events</span></a>
-					<span class="divider"><img src="http://www.mylaps.com/extension/amb/design/site/images/topmenu_divider.gif" alt="/" /></span>
-				</li>
-				<li>
-					<a href="/help/index.jsp" title="Help">
-					<img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/h1/Help.gif" alt="Help"/><span class="hide">Help</span></a>
-				</li>
-			</ul>
-			<form id="searchform" title="Search MyLaps.com" action="/search/search.jsp" method="get">
-				<input id="type" name="type" type="hidden" value="events" />
-				<input type="hidden" id="submitsearch" name="submitsearch" value="Search" />
-				<label for="query" class="hide">Search MYLAPS events</label>
-				<input id="query" name="query" type="text" value="" class="textfield"/>
-				<a class="btn1" href="javascript:void(0);" onclick="$('#searchform').submit();"><span class="btntype1"><img src="http://www.mylaps.com/textimage/button/btntype1/Search.gif" alt="Search" /><span class="hide">Search</span></span></a>
-			</form>
-		</div>
-		<div id="contentWrapper" class="wrapperBlock">
-			<div id="sideBar">
-				<!--  div class="subMenuProducts">
-					<ul>
-						<li class="subMenuProductsHeader"><a href="/index.jsp" title="MYLAPS Results"><img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/subMenuHeader/Event Results.gif" alt="Event Results" /><span class="hide">Event Results</span></a></li>
-						<li class="active"><a href="/practice/index.jsp" title="Practice Results"><img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/subMenu_active/Practice Results.gif" alt="Practice Results" /><span class="hide">Practice Results</span></a></li>
-						<li><a href="/event/upcoming.jsp" title="Upcoming Events"><img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/subMenu/Upcoming Events.gif" alt="Upcoming Events" /><span class="hide">Upcoming Events</span></a></li>
-						<li><a href="/search/index.jsp" title="Search MyLaps.com for your race results"><img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/subMenu/Search.gif" alt="Search" /><span class="hide">Search MyLaps.com for your race results</span></a></li>
-						<li><a href="/help/index.jsp" title="Help"><img class="imageHover" src="http://www.mylaps.com/textimage/headerDark/subMenu/Help.gif" alt="Help" /><span class="hide">Help</span></a></li>
-					</ul>
-				</div -->
-				<div id="loginbox" class="mylaps shadowBox">
-				
-				
-					<img src="http://www.mylaps.com/textimage/headerDark/h1/Member%2Blogin.gif" alt="Member login"/><span class="hide">Member login</span>
-					<div>
-						<form id="loginform" title="Login on MyLaps.com" action="/login/login.jsp" method="post" class="mylaps">
-							<fieldset>
-								<input type="hidden" id="submitlogin" name="submitlogin" value="Login" />
-								<p class="textfield required">
-									<label for="username">Username</label>
-									<input id="username" name="loginName" type="text" value="" />
-								</p>
-								<p class="textfield required">
-									<label for="password">Password</label>
-									<input id="password" name="loginPass" type="password" value="" />
-								</p>
-								<p class="checkbox required">
-									<input id="rememberme" name="rememberMe" type="checkbox" value="on" />
-									<label for="rememberme" class="checkbox">Remember</label>
-								</p>
-							</fieldset>
-							<a class="btn1" href="javascript:void(0);" onclick="$('#loginform').submit();"><span class="btntype1"><img src="http://www.mylaps.com/textimage/button/btntype1/Login.gif" alt="Login" /><span class="hide">Login</span></span></a>
-							<br class="clearBoth" />
-						</form>
-					   	<ul id="register">
-					   		<li><a href="/register/resend.jsp" title="Forgot account details?" class="readmore">Forgot account details?</a></li>
-					   		<li><a href="/register/registermember.jsp?regorg=0" title="Register as racer" class="readmore">Register as racer</a></li>
-					   		<li><a href="/register/registermember.jsp?regorg=1" title="Register as organization" class="readmore">Register as organization</a></li>
-					   	</ul>
-				
-					</div>
-				</div>
-                                        <div>
-                                            <a href="http://bit.ly/T4KZGA" target="_blank"><img src="/images/banners/nsf-banner.jpg" width="200px" height="200px"></a>
-                                        </div>
-                
-
-                <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fmylaps&amp;width=200&amp;colorscheme=light&amp;border_color=%23DDDDDD&amp;connections=3&amp;stream=false&amp;header=false&amp;height=235" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:235px; margin-bottom: 1em;" allowtransparency="true"></iframe>
-                <div class="mylaps" style="margin-bottom: 1em;">
-<script type="text/javascript"><!--
-google_ad_client = "ca-pub-3618403782481532";
-/* Results BottomLeft (200x200) */
-google_ad_slot = "8418423204";
-google_ad_width = 200;
-google_ad_height = 200;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
+            <script src="/js/jquery.js"></script>
+            <script src="/js/jquery.ui.js"></script>
+        </head>
+        <body>
+            <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+            <header>
+                <div class="wrapper">
+                    <a href="/practice/index.jsp">
+                        <h1>MYLAPS Practice Homepage</h1>
+                    </a>
+                    <div class="submenu">
+                        <a href="http://www.mylaps.com">MYLAPS Homepage</a>
+                        | <a href="/practice/index.jsp">MYLAPS Practice</a>
+                    </div>
+                    <div class="localesubmenu">
+                        <form action="#" method="post" id="language-data-form" name="language-data-form" class="select">
+                            <div class="selectbox">
+                                <select onchange="this.form.submit()" name="language">
+                                    <option selected="selected"value="en">English</option>
+                                    <option value="nl">Nederlands</option>
+                                    <option value="jp">日本語</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-			</div>
-			<div id="pageContent">
+            </header>
+            <div class="content">
+                <div class="wrapper">
+                    <h3>Welcome to MYLAPS Practice Results</h3>
+
 
 <div>
-	<h1><img src="http://www.mylaps.com/textimage/headerDark/h1/Laptimes%2Bfor%2BPauli%2BHelin.gif" alt="Laptimes for Pauli Helin"/><span class="hide">Laptimes for Pauli Helin</span></h1>
-	<div class="info">
-		<div class="logo">
-		<a href="/profiles/index.jsp?id=32259"><img id="idmtracklogo" src="/images/defaultlogo.gif" alt="Pauli Helin" width="120" height="90" /></a>
-
-		</div>
-		<table cellspacing="0" summary="Information about the selected track" class="info">
-			<colgroup>
-				<col id="label"/>
-				<col id="value"/>
-			</colgroup>
-			<tbody>
-				<tr>
-					<td><strong>Transponder</strong></td>
-					<td>5778155</td>
-				</tr>
-				<tr>
-					<td><strong>Track</strong></td>
-					<td><a href="showTrack.jsp?tid=1429">TamUA:n mattorata</a> (0.07 km)</td>
-				</tr>
-				<tr>
-					<td><strong>Location</strong></td>
-					<td>Nokia</td>
-				</tr>
-				<tr>
-					<td><strong>Date</strong></td>
-					<td><form method="GET">
-	<input type="hidden" name="transponder" value="5778155" />
-	<input type="hidden" name="tid" value="1429" />
-	<select id="day" name="day" onchange="this.form.submit();">
-		<option value="735231" selected="selected">29-12-2012 - 176 Passings</option>
-		<option value="735225">23-12-2012 - 57 Passings</option>
-	</select>
-</form>
-</td>
-				</tr>
-				<tr>
-					<td><strong>Tasks</strong></td>
-					<td>
-						<a href="GetCSVFile.jsp?transponder=5778155&tid=1429">Download passings as a CSV file</a><br />
-						<a href="GetTXTFile.jsp?transponder=5778155&tid=1429">Download passings as a TXT file.</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+    <h2>Laptimes for Pirkka</h2>
+    <div class="info">
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>Transponder</strong></td>
+                    <td>4450572</td>
+                </tr>
+                <tr>
+                    <td><strong>Track</strong></td>
+                    <td><a href="showTrack.jsp?tid=1429">TamUA:n mattorata</a> (0.07 km)</td>
+                </tr>
+                <tr>
+                    <td><strong>Location</strong></td>
+                    <td>Nokia</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="info">
-	<h1><img src="http://www.mylaps.com/textimage/headerDark/h1/Results%2Bof%2B29%2BDec%2B2012.gif" alt="Results of 29 Dec 2012"/><span class="hide">Results of 29 Dec 2012</span></h1>
-	<div>
-		
-		<table cellspacing="0" summary="Information about the selected date" class="info">
-			<colgroup>
-				<col id="label"/>
-				<col id="value"/>
-			</colgroup>
-			<tbody>
-				<tr>
-					<td><strong>Best time</strong></td>
-					<td>8.396 (30.0 km/h)</td>
-				</tr>
-				<tr>
-					<td><strong>Average Laptime</strong></td>
-					<td>9.166 (27.5 km/h)</td>
-				</tr>
-				<tr>
-					<td><strong>Laps</strong></td>
-					<td>171 (12.0 km)</td>
-				</tr>
-				<tr>
-					<td><strong>Total Time</strong></td>
-					<td>0:26:07</td>
-				</tr>
-			</tbody>
-		</table>
-	<div id="laptimesgraph"><img src="/servlet/LaptimesGraph/11b25/laptimesgraph.png?graph=_graph1356814118934" width="625" height="250"/></div>
-		        
-		 <div id="idmforms">
-		  	
-			<form id="idmrefresh" method="GET" action="/practice/showLaptimes.jsp" class="mylaps">
-				<input id="tid" name="tid" type="hidden" value="1429"/>
-				<input id="transponder" name="transponder" type="hidden" value="5778155"/>
-				<input id="date" name="date" type="hidden" value="29-12-2012"/>
-				Refresh every
-				<select id="refresh" name="refresh" onchange="this.form.submit();">
-					<option value="--">--</option>
-					<option value="10">10</option>
-					<option value="15">15</option>
-					<option value="30">30</option>
-					<option value="60">60</option>
-				</select>
-				<label>Seconds</label>
-				<a href="javascript:location.reload();"><img src="/images/icons/refresh.png" title="Refresh now"/></a>
-			</form>
-			
-			<br class="clearBoth" />
-		</div>
-   
-        <table summary="Practice lap times" class="mylaps practice" cellspacing="0">
-<caption>Session 1 started at 12:17:04 <a id="SessionRef0"></a></caption>
-<colgroup>
-<col class="lap"/>
-<col class="totaltime"/>
-<col class="section"/>
-<col class="laptime"/>
-<col class="lapgraphleft"/>
-<col class="lapgraphright"/>
-</colgroup>
-<thead>
-<tr>
-<td></td>
-<td class="time">Total Time</td>
-<td class="time">Laptime</td>
-<td>8</td>
-<td class="time">18</td>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>-</td>
-<td colspan="2" ><em>Session start</em></td>
-<td colspan="2"></td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td class="time">0:00:09</td>
-<td class="time ">9.528</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="15%"></td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td class="time">0:00:18</td>
-<td class="time LiveBetterOdd">9.303</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="13%"></td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td class="time">0:00:28</td>
-<td class="time LiveBetterEven">9.245</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td class="time">0:00:37</td>
-<td class="time LiveBetterOdd">9.072</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td class="time">0:00:46</td>
-<td class="time LiveWorserEven">9.286</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="13%"></td>
-</tr>
-<tr class="odd">
-<td>6</td>
-<td class="time">0:00:55</td>
-<td class="time LiveBetterOdd">9.230</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="even">
-<td>7</td>
-<td class="time">0:01:04</td>
-<td class="time LiveBetterEven">8.888</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>8</td>
-<td class="time">0:01:13</td>
-<td class="time LiveBetterOdd">8.874</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>9</td>
-<td class="time">0:01:22</td>
-<td class="time LiveWorserEven">9.064</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="odd">
-<td>10</td>
-<td class="time">0:01:31</td>
-<td class="time LiveBetterOdd">9.059</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="even">
-<td>11</td>
-<td class="time">0:01:40</td>
-<td class="time LiveWorserEven">9.256</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="13%"></td>
-</tr>
-<tr class="odd">
-<td>12</td>
-<td class="time">0:01:49</td>
-<td class="time LiveBetterOdd">9.146</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="even">
-<td>13</td>
-<td class="time">0:01:59</td>
-<td class="time LiveWorserEven">9.754</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="18%"></td>
-</tr>
-<tr class="odd">
-<td>14</td>
-<td class="time">0:02:08</td>
-<td class="time LiveBetterOdd">9.061</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="even">
-<td>15</td>
-<td class="time">0:02:17</td>
-<td class="time LiveBetterEven">8.835</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>16</td>
-<td class="time">0:02:26</td>
-<td class="time  LiveBestTime">8.676</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"> <strong>Best time</strong></td>
-</tr>
-<tr class="even">
-<td>17</td>
-<td class="time">0:02:35</td>
-<td class="time LiveWorserEven">8.809</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>18</td>
-<td class="time">0:02:46</td>
-<td class="time LiveWorserOdd">11.226</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="32%"></td>
-</tr>
-<tr class="even">
-<td>19</td>
-<td class="time">0:02:55</td>
-<td class="time LiveBetterEven">9.108</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="odd">
-<td>20</td>
-<td class="time">0:03:04</td>
-<td class="time LiveBetterOdd">8.740</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>21</td>
-<td class="time">0:03:13</td>
-<td class="time LiveWorserEven">9.126</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="odd">
-<td>22</td>
-<td class="time">0:03:22</td>
-<td class="time LiveWorserOdd">9.471</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="15%"></td>
-</tr>
-<tr class="even">
-<td>23</td>
-<td class="time">0:03:34</td>
-<td class="time LiveWorserEven">11.860</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="39%"></td>
-</tr>
-<tr class="odd">
-<td>24</td>
-<td class="time">0:03:44</td>
-<td class="time LiveBetterOdd">9.622</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="16%"></td>
-</tr>
-<tr class="even">
-<td>25</td>
-<td class="time">0:03:54</td>
-<td class="time LiveWorserEven">9.979</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="20%"></td>
-</tr>
-<tr class="odd">
-<td>26</td>
-<td class="time">0:04:03</td>
-<td class="time LiveBetterOdd">8.970</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
-</tr>
-<tr class="even">
-<td>27</td>
-<td class="time">0:04:12</td>
-<td class="time LiveWorserEven">9.266</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="13%"></td>
-</tr>
-<tr class="odd">
-<td>28</td>
-<td class="time">0:04:21</td>
-<td class="time LiveBetterOdd">8.877</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>29</td>
-<td class="time">0:04:30</td>
-<td class="time LiveWorserEven">8.883</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>30</td>
-<td class="time">0:04:39</td>
-<td class="time LiveWorserOdd">8.919</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>31</td>
-<td class="time">0:04:49</td>
-<td class="time LiveWorserEven">10.218</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="22%"></td>
-</tr>
-<tr class="odd">
-<td>32</td>
-<td class="time">0:04:59</td>
-<td class="time LiveBetterOdd">9.761</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="18%"></td>
-</tr>
-</tbody>
-</table>
+<div>
+    <h3 class="floatleft">Results of 02 May 2013</h3>
+    <form id="dateform" method="GET" class="floatright">
+	<input type="hidden" name="transponder" value="4450572" />
+	<input type="hidden" name="tid" value="1429" />
+	<div><label>Date</label><select id="day" name="day" onchange="this.form.submit();">
+		<option value="735355" selected="selected">2-5-2013 - 86 Passings</option>
+		<option value="735351">28-4-2013 - 344 Passings</option>
+		<option value="735344">21-4-2013 - 233 Passings</option>
+		<option value="735337">14-4-2013 - 214 Passings</option>
+		<option value="735323">31-3-2013 - 234 Passings</option>
+		<option value="735316">24-3-2013 - 230 Passings</option>
+		<option value="735302">10-3-2013 - 115 Passings</option>
+		<option value="735295">3-3-2013 - 233 Passings</option>
+		<option value="735291">27-2-2013 - 157 Passings</option>
+		<option value="735288">24-2-2013 - 93 Passings</option>
+		<option value="735280">16-2-2013 - 201 Passings</option>
+		<option value="735274">10-2-2013 - 247 Passings</option>
+		<option value="735273">9-2-2013 - 99 Passings</option>
+		<option value="735267">3-2-2013 - 237 Passings</option>
+		<option value="735256">23-1-2013 - 112 Passings</option>
+		<option value="735246">13-1-2013 - 256 Passings</option>
+		<option value="735245">12-1-2013 - 71 Passings</option>
+		<option value="735231">29-12-2012 - 171 Passings</option>
+	</select></div>
+</form>
+
+</div>
+<div class="clear"></div>
+<div>
+        
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>Best time</strong></td>
+                    <td>10.376 (24.3 km/h)</td>
+                </tr>
+                <tr>
+                    <td><strong>Average Laptime</strong></td>
+                    <td>11.550 (21.8 km/h)</td>
+                </tr>
+                <tr>
+                    <td><strong>Laps</strong></td>
+                    <td>80 (5.6 km)</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Time</strong></td>
+                    <td>0:15:24</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="laptimesgraph"><img src="/servlet/LaptimesGraph/9322/laptimesgraph.png?graph=_graph1367600083350" width="625" height="250"/></div>
+
+        <div class="clear"></div>
+
+        <div class="col-2">
+            <strong>Tasks</strong>
+            <p>
+                <a href="GetCSVFile.jsp?transponder=4450572&tid=1429">Download passings as a CSV file</a><br />
+                <a href="GetTXTFile.jsp?transponder=4450572&tid=1429">Download passings as a TXT file.</a>
+            </p>
+        </div>
+
+        <div id="idmforms" class="col-2">
+            <form id="idmrefresh" method="GET" action="/practice/showLaptimes.jsp" class="mylaps">
+                <input id="tid" name="tid" type="hidden" value="1429"/>
+                <input id="transponder" name="transponder" type="hidden" value="4450572"/>
+                <input id="date" name="date" type="hidden" value="02-05-2013"/>
+                <div>
+                    <label for="refresh">Refresh every</label>
+                    <select id="refresh" name="refresh" onchange="this.form.submit();">
+                        <option value="--">--</option>
+                        <option value="10">10 Seconds</option>
+                        <option value="15">15 Seconds</option>
+                        <option value="30">30 Seconds</option>
+                        <option value="60">60 Seconds</option>
+                    </select>
+                </div>
+                <a class="btnbasic-blue floatright" href="javascript:location.reload();">Refresh now</a>
+            </form>
+        </div>
+
+        <div class="clear"></div>
+
+        <h4>Session 1 started at 20:21:33 <a id="SessionRef0"></a></h4>
 <table summary="Practice lap times" class="mylaps practice" cellspacing="0">
-<caption>Session 2 started at 12:58:52 <a id="SessionRef1"></a></caption>
 <colgroup>
 <col class="lap"/>
 <col class="totaltime"/>
@@ -498,8 +174,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <td></td>
 <td class="time">Total Time</td>
 <td class="time">Laptime</td>
-<td>8</td>
-<td class="time">18</td>
+<td>1</td>
+<td class="time">11</td>
 </tr>
 </thead>
 <tbody>
@@ -510,212 +186,32 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </tr>
 <tr class="even">
 <td>1</td>
-<td class="time">0:00:09</td>
-<td class="time ">9.044</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
+<td class="time">0:00:14</td>
+<td class="time ">14.011</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td class="time">0:00:18</td>
-<td class="time LiveWorserOdd">9.078</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
+<td class="time">0:00:24</td>
+<td class="time  LiveBestTime">10.740</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="97%"> <strong>Best time</strong></td>
 </tr>
 <tr class="even">
 <td>3</td>
-<td class="time">0:00:26</td>
-<td class="time LiveBetterEven">8.870</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>4</td>
 <td class="time">0:00:35</td>
-<td class="time LiveBetterOdd">8.861</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td class="time">0:00:44</td>
-<td class="time LiveBetterEven">8.639</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
+<td class="time LiveWorserEven">10.767</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="98%"></td>
 </tr>
 <tr class="odd">
-<td>6</td>
-<td class="time">0:00:53</td>
-<td class="time LiveWorserOdd">8.827</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>7</td>
-<td class="time">0:01:02</td>
-<td class="time LiveWorserEven">8.867</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>8</td>
-<td class="time">0:01:11</td>
-<td class="time LiveWorserOdd">8.930</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>9</td>
-<td class="time">0:01:20</td>
-<td class="time LiveWorserEven">9.031</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
-</tr>
-<tr class="odd">
-<td>10</td>
-<td class="time">0:01:29</td>
-<td class="time LiveBetterOdd">8.917</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>11</td>
-<td class="time">0:01:37</td>
-<td class="time LiveBetterEven">8.760</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>12</td>
-<td class="time">0:01:46</td>
-<td class="time LiveWorserOdd">8.972</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
-</tr>
-<tr class="even">
-<td>13</td>
-<td class="time">0:01:55</td>
-<td class="time LiveBetterEven">8.867</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>14</td>
-<td class="time">0:02:04</td>
-<td class="time LiveWorserOdd">9.165</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="even">
-<td>15</td>
-<td class="time">0:02:13</td>
-<td class="time LiveBetterEven">8.639</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>16</td>
-<td class="time">0:02:22</td>
-<td class="time LiveWorserOdd">8.665</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>17</td>
-<td class="time">0:02:30</td>
-<td class="time LiveWorserEven">8.770</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>18</td>
-<td class="time">0:02:40</td>
-<td class="time LiveWorserOdd">9.323</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="13%"></td>
-</tr>
-<tr class="even">
-<td>19</td>
-<td class="time">0:02:49</td>
-<td class="time LiveBetterEven">8.924</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>20</td>
-<td class="time">0:02:57</td>
-<td class="time LiveBetterOdd">8.676</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>21</td>
-<td class="time">0:03:06</td>
-<td class="time LiveWorserEven">8.822</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>22</td>
-<td class="time">0:03:15</td>
-<td class="time LiveBetterOdd">8.620</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="even">
-<td>23</td>
-<td class="time">0:03:23</td>
-<td class="time LiveBetterEven">8.558</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>24</td>
-<td class="time">0:03:32</td>
-<td class="time LiveWorserOdd">8.685</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>25</td>
-<td class="time">0:03:41</td>
-<td class="time LiveWorserEven">8.781</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>26</td>
-<td class="time">0:03:50</td>
-<td class="time LiveBetterOdd">8.752</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>27</td>
-<td class="time">0:03:58</td>
-<td class="time LiveBetterEven">8.592</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>28</td>
-<td class="time">0:04:07</td>
-<td class="time LiveWorserOdd">8.724</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>29</td>
-<td class="time">0:04:18</td>
-<td class="time LiveWorserEven">11.005</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="30%"></td>
-</tr>
-<tr class="odd">
-<td>30</td>
-<td class="time">0:04:26</td>
-<td class="time  LiveBestTime">8.510</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"> <strong>Best time</strong></td>
-</tr>
-<tr class="even">
-<td>31</td>
-<td class="time">0:04:36</td>
-<td class="time LiveWorserEven">9.216</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="odd">
-<td>32</td>
-<td class="time">0:04:44</td>
-<td class="time LiveBetterOdd">8.816</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>33</td>
-<td class="time">0:04:53</td>
-<td class="time LiveWorserEven">8.937</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>34</td>
-<td class="time">0:05:02</td>
-<td class="time LiveBetterOdd">8.686</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
+<td>4</td>
+<td class="time">0:00:47</td>
+<td class="time LiveWorserOdd">11.619</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 </tbody>
 </table>
+<h4>Session 2 started at 20:22:48 <a id="SessionRef1"></a></h4>
 <table summary="Practice lap times" class="mylaps practice" cellspacing="0">
-<caption>Session 3 started at 13:42:23 <a id="SessionRef2"></a></caption>
 <colgroup>
 <col class="lap"/>
 <col class="totaltime"/>
@@ -729,8 +225,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <td></td>
 <td class="time">Total Time</td>
 <td class="time">Laptime</td>
-<td>8</td>
-<td class="time">18</td>
+<td>1</td>
+<td class="time">11</td>
 </tr>
 </thead>
 <tbody>
@@ -741,757 +237,602 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </tr>
 <tr class="even">
 <td>1</td>
-<td class="time">0:00:08</td>
-<td class="time ">8.917</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
+<td class="time">0:00:13</td>
+<td class="time ">13.623</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td class="time">0:00:17</td>
-<td class="time LiveBetterOdd">8.535</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"></td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td class="time">0:00:25</td>
-<td class="time LiveWorserEven">8.541</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"></td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td class="time">0:00:34</td>
-<td class="time LiveWorserOdd">8.670</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td class="time">0:00:43</td>
-<td class="time LiveWorserEven">8.831</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>6</td>
-<td class="time">0:00:52</td>
-<td class="time LiveBetterOdd">8.703</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>7</td>
-<td class="time">0:01:00</td>
-<td class="time LiveBetterEven">8.626</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>8</td>
-<td class="time">0:01:09</td>
-<td class="time LiveBetterOdd">8.509</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"></td>
-</tr>
-<tr class="even">
-<td>9</td>
-<td class="time">0:01:18</td>
-<td class="time LiveWorserEven">9.057</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="11%"></td>
-</tr>
-<tr class="odd">
-<td>10</td>
-<td class="time">0:01:26</td>
-<td class="time  LiveBestTime">8.396</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="4%"> <strong>Best time</strong></td>
-</tr>
-<tr class="even">
-<td>11</td>
-<td class="time">0:01:35</td>
-<td class="time LiveWorserEven">8.839</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>12</td>
-<td class="time">0:01:44</td>
-<td class="time LiveBetterOdd">8.796</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>13</td>
-<td class="time">0:01:53</td>
-<td class="time LiveWorserEven">8.984</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
-</tr>
-<tr class="odd">
-<td>14</td>
-<td class="time">0:02:02</td>
-<td class="time LiveBetterOdd">8.625</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="even">
-<td>15</td>
-<td class="time">0:02:10</td>
-<td class="time LiveWorserEven">8.676</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="odd">
-<td>16</td>
-<td class="time">0:02:19</td>
-<td class="time LiveWorserOdd">9.043</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
-</tr>
-<tr class="even">
-<td>17</td>
-<td class="time">0:02:28</td>
-<td class="time LiveBetterEven">8.510</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"></td>
-</tr>
-<tr class="odd">
-<td>18</td>
-<td class="time">0:02:36</td>
-<td class="time LiveWorserOdd">8.700</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>19</td>
-<td class="time">0:02:45</td>
-<td class="time LiveBetterEven">8.658</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="odd">
-<td>20</td>
-<td class="time">0:02:54</td>
-<td class="time LiveBetterOdd">8.642</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="even">
-<td>21</td>
-<td class="time">0:03:02</td>
-<td class="time LiveWorserEven">8.650</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="odd">
-<td>22</td>
-<td class="time">0:03:11</td>
-<td class="time LiveWorserOdd">8.774</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>23</td>
-<td class="time">0:03:20</td>
-<td class="time LiveWorserEven">8.821</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>24</td>
-<td class="time">0:03:29</td>
-<td class="time LiveWorserOdd">8.826</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>25</td>
-<td class="time">0:03:38</td>
-<td class="time LiveWorserEven">8.844</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>26</td>
-<td class="time">0:03:47</td>
-<td class="time LiveWorserOdd">8.933</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>27</td>
-<td class="time">0:03:55</td>
-<td class="time LiveBetterEven">8.573</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>28</td>
-<td class="time">0:04:04</td>
-<td class="time LiveWorserOdd">8.778</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>29</td>
-<td class="time">0:04:13</td>
-<td class="time LiveWorserEven">9.157</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="odd">
-<td>30</td>
-<td class="time">0:04:22</td>
-<td class="time LiveBetterOdd">8.781</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>31</td>
-<td class="time">0:04:30</td>
-<td class="time LiveBetterEven">8.521</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"></td>
-</tr>
-<tr class="odd">
-<td>32</td>
-<td class="time">0:04:39</td>
-<td class="time LiveWorserOdd">8.871</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>33</td>
-<td class="time">0:04:48</td>
-<td class="time LiveBetterEven">8.629</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>34</td>
-<td class="time">0:04:57</td>
-<td class="time LiveBetterOdd">8.611</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="even">
-<td>35</td>
-<td class="time">0:05:05</td>
-<td class="time LiveBetterEven">8.586</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-</tbody>
-</table>
-<table summary="Practice lap times" class="mylaps practice" cellspacing="0">
-<caption>Session 4 started at 14:24:26 <a id="SessionRef3"></a></caption>
-<colgroup>
-<col class="lap"/>
-<col class="totaltime"/>
-<col class="section"/>
-<col class="laptime"/>
-<col class="lapgraphleft"/>
-<col class="lapgraphright"/>
-</colgroup>
-<thead>
-<tr>
-<td></td>
-<td class="time">Total Time</td>
-<td class="time">Laptime</td>
-<td>8</td>
-<td class="time">18</td>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>-</td>
-<td colspan="2" ><em>Session start</em></td>
-<td colspan="2"></td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td class="time">0:00:08</td>
-<td class="time ">8.943</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td class="time">0:00:17</td>
-<td class="time LiveBetterOdd">8.739</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td class="time">0:00:26</td>
-<td class="time LiveWorserEven">8.806</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td class="time">0:00:35</td>
-<td class="time LiveWorserOdd">9.274</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="13%"></td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td class="time">0:00:44</td>
-<td class="time LiveBetterEven">9.163</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="odd">
-<td>6</td>
-<td class="time">0:00:53</td>
-<td class="time LiveBetterOdd">8.764</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>7</td>
-<td class="time">0:01:02</td>
-<td class="time LiveBetterEven">8.566</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>8</td>
-<td class="time">0:01:10</td>
-<td class="time LiveWorserOdd">8.739</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>9</td>
-<td class="time">0:01:19</td>
-<td class="time LiveWorserEven">8.836</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>10</td>
-<td class="time">0:01:29</td>
-<td class="time LiveWorserOdd">9.191</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="even">
-<td>11</td>
-<td class="time">0:01:37</td>
-<td class="time LiveBetterEven">8.649</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>12</td>
-<td class="time">0:01:46</td>
-<td class="time LiveBetterOdd">8.583</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="even">
-<td>13</td>
-<td class="time">0:01:54</td>
-<td class="time LiveWorserEven">8.655</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="odd">
-<td>14</td>
-<td class="time">0:02:03</td>
-<td class="time LiveWorserOdd">8.772</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>15</td>
-<td class="time">0:02:12</td>
-<td class="time LiveBetterEven">8.586</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>16</td>
-<td class="time">0:02:20</td>
-<td class="time LiveWorserOdd">8.689</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>17</td>
-<td class="time">0:02:29</td>
-<td class="time LiveBetterEven">8.595</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>18</td>
-<td class="time">0:02:38</td>
-<td class="time LiveWorserOdd">9.336</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="13%"></td>
-</tr>
-<tr class="even">
-<td>19</td>
-<td class="time">0:02:47</td>
-<td class="time LiveBetterEven">8.781</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>20</td>
-<td class="time">0:02:56</td>
-<td class="time LiveWorserOdd">8.809</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>21</td>
-<td class="time">0:03:05</td>
-<td class="time LiveBetterEven">8.602</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>22</td>
-<td class="time">0:03:13</td>
-<td class="time LiveWorserOdd">8.916</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>23</td>
-<td class="time">0:03:22</td>
-<td class="time  LiveBestTime">8.496</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"> <strong>Best time</strong></td>
-</tr>
-<tr class="odd">
-<td>24</td>
-<td class="time">0:03:31</td>
-<td class="time LiveWorserOdd">8.606</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="even">
-<td>25</td>
-<td class="time">0:03:40</td>
-<td class="time LiveWorserEven">9.238</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="odd">
-<td>26</td>
-<td class="time">0:03:49</td>
-<td class="time LiveBetterOdd">8.907</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>27</td>
-<td class="time">0:03:57</td>
-<td class="time LiveBetterEven">8.646</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>28</td>
-<td class="time">0:04:06</td>
-<td class="time LiveBetterOdd">8.517</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"></td>
-</tr>
-<tr class="even">
-<td>29</td>
-<td class="time">0:04:15</td>
-<td class="time LiveWorserEven">9.179</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="odd">
-<td>30</td>
-<td class="time">0:04:24</td>
-<td class="time LiveBetterOdd">9.020</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
-</tr>
-<tr class="even">
-<td>31</td>
-<td class="time">0:04:33</td>
-<td class="time LiveBetterEven">8.945</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>32</td>
-<td class="time">0:04:42</td>
-<td class="time LiveWorserOdd">9.228</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
-</tr>
-<tr class="even">
-<td>33</td>
-<td class="time">0:04:51</td>
-<td class="time LiveBetterEven">8.767</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>34</td>
-<td class="time">0:05:03</td>
-<td class="time LiveWorserOdd">12.159</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="42%"></td>
-</tr>
-</tbody>
-</table>
-<table summary="Practice lap times" class="mylaps practice" cellspacing="0">
-<caption>Session 5 started at 15:11:17 <a id="SessionRef4"></a></caption>
-<colgroup>
-<col class="lap"/>
-<col class="totaltime"/>
-<col class="section"/>
-<col class="laptime"/>
-<col class="lapgraphleft"/>
-<col class="lapgraphright"/>
-</colgroup>
-<thead>
-<tr>
-<td></td>
-<td class="time">Total Time</td>
-<td class="time">Laptime</td>
-<td>8</td>
-<td class="time">18</td>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>-</td>
-<td colspan="2" ><em>Session start</em></td>
-<td colspan="2"></td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td class="time">0:00:08</td>
-<td class="time ">8.557</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td class="time">0:00:17</td>
-<td class="time LiveWorserOdd">8.819</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td class="time">0:00:26</td>
-<td class="time LiveWorserEven">8.862</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td class="time">0:00:34</td>
-<td class="time LiveBetterOdd">8.746</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td class="time">0:00:43</td>
-<td class="time LiveBetterEven">8.572</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>6</td>
-<td class="time">0:00:52</td>
-<td class="time LiveWorserOdd">8.867</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
-</tr>
-<tr class="even">
-<td>7</td>
-<td class="time">0:01:01</td>
-<td class="time LiveBetterEven">8.596</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>8</td>
-<td class="time">0:01:09</td>
-<td class="time LiveWorserOdd">8.733</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
-</tr>
-<tr class="even">
-<td>9</td>
-<td class="time">0:01:18</td>
-<td class="time LiveBetterEven">8.644</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
-</tr>
-<tr class="odd">
-<td>10</td>
-<td class="time">0:01:27</td>
-<td class="time LiveWorserOdd">8.800</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="even">
-<td>11</td>
-<td class="time">0:01:36</td>
-<td class="time LiveWorserEven">8.975</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
-</tr>
-<tr class="odd">
-<td>12</td>
-<td class="time">0:02:16</td>
-<td class="time LiveWorserOdd">40.774</td>
+<td class="time">0:00:24</td>
+<td class="time LiveBetterOdd">11.194</td>
 <td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="even">
+<td>3</td>
+<td class="time">0:00:35</td>
+<td class="time LiveBetterEven">10.526</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="95%"></td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td class="time">0:00:46</td>
+<td class="time LiveWorserOdd">10.857</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td class="time">0:00:56</td>
+<td class="time  LiveBestTime">10.502</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="95%"> <strong>Best time</strong></td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td class="time">0:01:07</td>
+<td class="time LiveWorserOdd">10.564</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="96%"></td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td class="time">0:01:18</td>
+<td class="time LiveWorserEven">11.141</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td class="time">0:01:29</td>
+<td class="time LiveBetterOdd">10.945</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td class="time">0:01:40</td>
+<td class="time LiveWorserEven">11.131</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td class="time">0:01:51</td>
+<td class="time LiveBetterOdd">10.948</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
+</tr>
+</tbody>
+</table>
+<h4>Session 3 started at 20:25:12 <a id="SessionRef2"></a></h4>
+<table summary="Practice lap times" class="mylaps practice" cellspacing="0">
+<colgroup>
+<col class="lap"/>
+<col class="totaltime"/>
+<col class="section"/>
+<col class="laptime"/>
+<col class="lapgraphleft"/>
+<col class="lapgraphright"/>
+</colgroup>
+<thead>
+<tr>
+<td></td>
+<td class="time">Total Time</td>
+<td class="time">Laptime</td>
+<td>1</td>
+<td class="time">11</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-</td>
+<td colspan="2" ><em>Session start</em></td>
+<td colspan="2"></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td class="time">0:00:11</td>
+<td class="time ">11.588</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td class="time">0:00:23</td>
+<td class="time LiveBetterOdd">11.456</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td class="time">0:00:35</td>
+<td class="time LiveWorserEven">12.393</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td class="time">0:00:48</td>
+<td class="time LiveWorserOdd">12.963</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td class="time">0:00:59</td>
+<td class="time LiveBetterEven">11.170</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td class="time">0:01:10</td>
+<td class="time LiveBetterOdd">11.159</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td class="time">0:01:21</td>
+<td class="time LiveBetterEven">10.961</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td class="time">0:01:33</td>
+<td class="time LiveWorserOdd">11.421</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td class="time">0:01:44</td>
+<td class="time LiveBetterEven">11.115</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td class="time">0:01:55</td>
+<td class="time LiveWorserOdd">11.289</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td class="time">0:02:06</td>
+<td class="time LiveBetterEven">11.224</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td class="time">0:02:17</td>
+<td class="time LiveBetterOdd">10.787</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="98%"></td>
+</tr>
+<tr class="even">
 <td>13</td>
-<td class="time">0:02:25</td>
-<td class="time LiveBetterEven">8.586</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
+<td class="time">0:02:28</td>
+<td class="time LiveWorserEven">11.173</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
 <td>14</td>
-<td class="time">0:02:34</td>
-<td class="time  LiveBestTime">8.517</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="5%"> <strong>Best time</strong></td>
+<td class="time">0:02:39</td>
+<td class="time LiveBetterOdd">10.883</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
 </tr>
 <tr class="even">
 <td>15</td>
-<td class="time">0:02:43</td>
-<td class="time LiveWorserEven">9.010</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
+<td class="time">0:02:50</td>
+<td class="time LiveBetterEven">10.760</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="98%"></td>
 </tr>
 <tr class="odd">
 <td>16</td>
-<td class="time">0:02:51</td>
-<td class="time LiveBetterOdd">8.892</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
+<td class="time">0:03:02</td>
+<td class="time LiveWorserOdd">12.030</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="even">
 <td>17</td>
-<td class="time">0:03:00</td>
-<td class="time LiveBetterEven">8.838</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
+<td class="time">0:03:14</td>
+<td class="time LiveBetterEven">11.786</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
 <td>18</td>
-<td class="time">0:03:09</td>
-<td class="time LiveBetterOdd">8.745</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
+<td class="time">0:03:24</td>
+<td class="time LiveBetterOdd">10.692</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="97%"></td>
 </tr>
 <tr class="even">
 <td>19</td>
-<td class="time">0:03:18</td>
-<td class="time LiveWorserEven">8.864</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
+<td class="time">0:03:36</td>
+<td class="time LiveWorserEven">11.593</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
 <td>20</td>
-<td class="time">0:03:27</td>
-<td class="time LiveBetterOdd">8.731</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
+<td class="time">0:03:47</td>
+<td class="time LiveBetterOdd">10.985</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="even">
 <td>21</td>
-<td class="time">0:03:35</td>
-<td class="time LiveBetterEven">8.653</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
+<td class="time">0:03:58</td>
+<td class="time LiveWorserEven">11.543</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
 <td>22</td>
-<td class="time">0:03:44</td>
-<td class="time LiveWorserOdd">8.697</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
+<td class="time">0:04:10</td>
+<td class="time LiveBetterOdd">11.305</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="even">
 <td>23</td>
-<td class="time">0:03:53</td>
-<td class="time LiveWorserEven">8.767</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
+<td class="time">0:04:21</td>
+<td class="time LiveBetterEven">10.921</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
 </tr>
 <tr class="odd">
 <td>24</td>
-<td class="time">0:04:02</td>
-<td class="time LiveWorserOdd">8.810</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
+<td class="time">0:04:32</td>
+<td class="time LiveWorserOdd">11.800</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="even">
 <td>25</td>
-<td class="time">0:04:10</td>
-<td class="time LiveBetterEven">8.792</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
+<td class="time">0:04:43</td>
+<td class="time LiveBetterEven">10.475</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="95%"></td>
 </tr>
 <tr class="odd">
 <td>26</td>
-<td class="time">0:04:19</td>
-<td class="time LiveBetterOdd">8.655</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
+<td class="time">0:04:53</td>
+<td class="time  LiveBestTime">10.376</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="94%"> <strong>Best time</strong></td>
 </tr>
 <tr class="even">
 <td>27</td>
-<td class="time">0:04:28</td>
-<td class="time LiveWorserEven">8.900</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
+<td class="time">0:05:04</td>
+<td class="time LiveWorserEven">10.707</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="97%"></td>
 </tr>
 <tr class="odd">
 <td>28</td>
-<td class="time">0:04:37</td>
-<td class="time LiveWorserOdd">8.985</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="10%"></td>
+<td class="time">0:05:15</td>
+<td class="time LiveWorserOdd">11.281</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+</tbody>
+</table>
+<h4>Session 4 started at 20:30:58 <a id="SessionRef3"></a></h4>
+<table summary="Practice lap times" class="mylaps practice" cellspacing="0">
+<colgroup>
+<col class="lap"/>
+<col class="totaltime"/>
+<col class="section"/>
+<col class="laptime"/>
+<col class="lapgraphleft"/>
+<col class="lapgraphright"/>
+</colgroup>
+<thead>
+<tr>
+<td></td>
+<td class="time">Total Time</td>
+<td class="time">Laptime</td>
+<td>1</td>
+<td class="time">11</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-</td>
+<td colspan="2" ><em>Session start</em></td>
+<td colspan="2"></td>
 </tr>
 <tr class="even">
-<td>29</td>
-<td class="time">0:04:46</td>
-<td class="time LiveBetterEven">8.894</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
+<td>-</td>
+<td colspan="2" ><em>Session start</em></td>
+<td colspan="2"></td>
 </tr>
 <tr class="odd">
-<td>30</td>
-<td class="time">0:04:55</td>
-<td class="time LiveBetterOdd">8.811</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
+<td>1</td>
+<td class="time">0:00:11</td>
+<td class="time ">11.403</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="even">
-<td>31</td>
+<td>2</td>
+<td class="time">0:00:22</td>
+<td class="time LiveWorserEven">11.468</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td class="time">0:00:35</td>
+<td class="time LiveWorserOdd">12.405</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td class="time">0:00:46</td>
+<td class="time LiveBetterEven">11.578</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td class="time">0:00:58</td>
+<td class="time LiveBetterOdd">11.455</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td class="time">0:01:10</td>
+<td class="time LiveWorserEven">12.012</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td class="time">0:01:21</td>
+<td class="time LiveBetterOdd">11.329</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td class="time">0:01:33</td>
+<td class="time LiveWorserEven">11.350</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td class="time">0:01:43</td>
+<td class="time LiveBetterOdd">10.728</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="97%"></td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td class="time">0:01:55</td>
+<td class="time LiveWorserEven">11.466</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td class="time">0:02:06</td>
+<td class="time LiveBetterOdd">10.878</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td class="time">0:02:17</td>
+<td class="time LiveWorserEven">10.971</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td class="time">0:02:28</td>
+<td class="time LiveWorserOdd">11.301</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td class="time">0:02:39</td>
+<td class="time LiveBetterEven">10.957</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td class="time">0:02:50</td>
+<td class="time LiveWorserOdd">11.302</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td class="time">0:03:01</td>
+<td class="time LiveBetterEven">11.002</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td class="time">0:03:12</td>
+<td class="time LiveWorserOdd">11.268</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td class="time">0:03:23</td>
+<td class="time LiveBetterEven">10.861</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td class="time">0:03:35</td>
+<td class="time LiveWorserOdd">11.633</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td class="time">0:03:46</td>
+<td class="time LiveBetterEven">11.130</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td class="time">0:03:57</td>
+<td class="time LiveBetterOdd">10.945</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="99%"></td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td class="time">0:04:08</td>
+<td class="time LiveBetterEven">10.843</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="98%"></td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td class="time">0:04:19</td>
+<td class="time LiveWorserOdd">11.693</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td class="time">0:04:31</td>
+<td class="time LiveBetterEven">11.061</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td class="time">0:04:41</td>
+<td class="time  LiveBestTime">10.703</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="97%"> <strong>Best time</strong></td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td class="time">0:04:52</td>
+<td class="time LiveWorserEven">10.830</td>
+<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="98%"></td>
+</tr>
+<tr class="odd">
+<td>27</td>
 <td class="time">0:05:03</td>
-<td class="time LiveBetterEven">8.751</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="8%"></td>
-</tr>
-<tr class="odd">
-<td>32</td>
-<td class="time">0:05:20</td>
-<td class="time LiveWorserOdd">17.150</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="92%"></td>
+<td class="time LiveWorserOdd">11.108</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="even">
-<td>33</td>
-<td class="time">0:05:30</td>
-<td class="time LiveBetterEven">9.229</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="12%"></td>
+<td>28</td>
+<td class="time">0:05:17</td>
+<td class="time LiveWorserEven">13.605</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
-<td>34</td>
-<td class="time">0:05:39</td>
-<td class="time LiveBetterOdd">8.901</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="9%"></td>
+<td>29</td>
+<td class="time">0:05:28</td>
+<td class="time LiveBetterOdd">11.375</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+</tbody>
+</table>
+<h4>Session 5 started at 21:00:03 <a id="SessionRef4"></a></h4>
+<table summary="Practice lap times" class="mylaps practice" cellspacing="0">
+<colgroup>
+<col class="lap"/>
+<col class="totaltime"/>
+<col class="section"/>
+<col class="laptime"/>
+<col class="lapgraphleft"/>
+<col class="lapgraphright"/>
+</colgroup>
+<thead>
+<tr>
+<td></td>
+<td class="time">Total Time</td>
+<td class="time">Laptime</td>
+<td>1</td>
+<td class="time">11</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-</td>
+<td colspan="2" ><em>Session start</em></td>
+<td colspan="2"></td>
 </tr>
 <tr class="even">
-<td>35</td>
-<td class="time">0:05:47</td>
-<td class="time LiveBetterEven">8.645</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="6%"></td>
+<td>1</td>
+<td class="time">0:00:12</td>
+<td class="time ">12.599</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 <tr class="odd">
-<td>36</td>
-<td class="time">0:05:56</td>
-<td class="time LiveWorserOdd">8.655</td>
-<td colspan="2" class="timebar"><img src="/images/block.gif" height="10px" width="7%"></td>
+<td>2</td>
+<td class="time">0:00:23</td>
+<td class="time LiveBetterOdd">11.151</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td class="time">0:00:35</td>
+<td class="time LiveWorserEven">11.696</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td class="time">0:00:51</td>
+<td class="time LiveWorserOdd">16.194</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td class="time">0:01:03</td>
+<td class="time LiveBetterEven">11.895</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td class="time">0:01:14</td>
+<td class="time LiveBetterOdd">11.276</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td class="time">0:01:25</td>
+<td class="time  LiveBestTime">11.003</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"> <strong>Best time</strong></td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td class="time">0:01:37</td>
+<td class="time LiveWorserOdd">11.404</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td class="time">0:02:00</td>
+<td class="time LiveWorserEven">23.741</td>
+<td colspan="2" class="timebar"><img src="/images/blockorange.gif" height="10px" width="100%"></td>
 </tr>
 </tbody>
 </table>
 
-	</div>
-</div>
-<div>
-	<h1><img src="http://www.mylaps.com/textimage/headerDark/h1/Help%2Band%2Blegend.gif" alt="Help and legend"/><span class="hide">Help and legend</span></h1>
-	<div>
-		<dl id="laptimeslegend">
-			<dt class="LiveBetterEven">
-			Laptime is faster then previous laptime
-			</dt>
-			<dd></dd>
-			<dt class="LiveWorserEven">
-			Laptime is slower then previous laptime
-			</dt>
-			<dd></dd>
-			<dt class="LiveBestTime">
-			Best laptime
-			</dt>
-			<dd></dd>
-			<dt class="LiveInvalidLaptime">
-			Invalid time
-			</dt>
-			<dd></dd>
-			<dt class="LivePit">
-			Pit
-			</dt>
-			<dd></dd>
-		</dl>
-	</div>
+    </div>
+
+    <h2>Help and legend</h2>
+    <div>
+        <dl id="laptimeslegend">
+            <dt class="LiveBetterEven">
+            Laptime is faster then previous laptime
+            </dt>
+            <dd></dd>
+            <dt class="LiveWorserEven">
+            Laptime is slower then previous laptime
+            </dt>
+            <dd></dd>
+            <dt class="LiveBestTime">
+            Best laptime
+            </dt>
+            <dd></dd>
+            <dt class="LiveInvalidLaptime">
+            Invalid time
+            </dt>
+            <dd></dd>
+            <dt class="LivePit">
+            Pit
+            </dt>
+            <dd></dd>
+        </dl>
+    </div>
 </div>
 
 
 
-			</div>
-		</div>
-		<div id="footer" class="footerBlanc">
-			<div class="wrapperBlock">
-				<hr class="hide" />
-				<div class="subMenu">
-<div class="addthis_toolbox addthis_default_style">
-<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=mylaps" class="addthis_button_compact">Share</a>
-<span class="addthis_separator">|</span>
-<a class="addthis_button_preferred_1"></a>
-<a class="addthis_button_preferred_2"></a>
-<a class="addthis_button_preferred_3"></a>
-<a class="addthis_button_preferred_4"></a>
-</div>
-				</div>
-				<p class="mylaps">
-					<a class="noPrint" href="/rss/aboutrss.jsp"><img src="/images/rss.png" alt="Mylaps.com Results feeds" /><span class="hide">RSS</span></a>
-				</p>
-			</div>
-		</div>
-	</div>
-	
-	<script type="text/javascript">
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-	<script type="text/javascript">
-	try {
-		var pageTracker = _gat._getTracker("UA-108462-2");
-		pageTracker._trackPageview();
-    } catch(err) {}
-    </script>
-	<script type="text/javascript">var addthis_config = { data_track_clickback :true, data_ga_tracker: pageTracker};</script>
-	<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=mylaps"></script>
+           <div class="clear"></div>
+        </div> <!-- /content -->
+    </div> <!-- /wrapper -->
+    <footer>
+            <div class="wrapper">
+            </div>
+
+            <div class="clear"></div>
+            <div class="bottom">
+            </div>
+        </footer>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-108462-18']);
+  _gaq.push(['_setDomainName', 'mylaps.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 </body>
 </html>
-
