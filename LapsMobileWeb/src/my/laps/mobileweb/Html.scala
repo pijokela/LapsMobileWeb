@@ -40,7 +40,7 @@ class Html(val conf : UserConf) {
 	    it may also be that the practice server is currently down.
 	  </p>
 	  <p>
-	    <a href="http://www.mylaps.com/practice/index.jsp">You can try using the Mylaps practice server directly</a>
+	    <a href="http://practice.mylaps.com/">You can try using the Mylaps practice server directly</a>
 	  </p>
 	  """
 	  
@@ -53,7 +53,7 @@ class Html(val conf : UserConf) {
 	    one. Sorry.
 	  </p>
 	  <p>
-	    <a href="http://www.mylaps.com/practice/index.jsp">You can try using the Mylaps practice server directly</a>
+	    <a href="http://practice.mylaps.com/">You can try using the Mylaps practice server directly</a>
 	  </p>
 	  """
 	  
