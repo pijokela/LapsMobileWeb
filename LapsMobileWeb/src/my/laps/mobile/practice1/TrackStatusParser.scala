@@ -21,7 +21,7 @@ class TrackStatusParser(source : Source, conf : MylapsConf) {
   val lines = source.getLines.toList
   
   
-  val trackNameRegex = "<h1><img src=\".+?\" alt=\"(.+?)\"".r
+  val trackNameRegex = "<h2>(.+?)</h2>".r
   
   /**
    * <h1><img src="http://www.mylaps.com/textimage/headerDark/h1/TamUA%253An%2Bmattorata.gif" alt="TamUA:n mattorata"/><span class="hide">TamUA:n mattorata</span></h1>
@@ -51,34 +51,38 @@ class TrackStatusParser(source : Source, conf : MylapsConf) {
   }
   
   lazy val trackSection = lines
-		  .dropWhile(!_.trim.startsWith("""<table cellspacing="0" summary="Information about the selected track""""))
-		  .takeWhile(!_.trim.startsWith("</div>"))
+		  .dropWhile(!_.trim.equals("<table>"))
+		  .takeWhile(!_.trim.equals("</div>"))
   
   /**
-   * 		<table cellspacing="0" summary="Information about the selected track" class="info">
-			<colgroup>
-				<col id="label"/>
-				<col id="value"/>
-			</colgroup>
-			<tbody>
-				<tr>
-					<td><strong>Length</strong></td>
-					<td>0.07 km</td>
-				</tr>
-				<tr>
-					<td><strong>Location</strong></td>
-					<td>Nokia</td>
-				</tr>
-				<tr>
-					<td><strong>Status</strong></td>
-					<td>Online</td>
-				</tr>
-				<tr>
-					<td><strong>Active</strong></td>
-					<td>No track activity</td>
-				</tr>
-			</tbody>
-		</table>
+
+    <h2>TamUA:n mattorata</h2>
+    <div class="info">
+        <!-- div class="logo">
+        <a href="http://www.tamua.fi/" target="_blank"><img id="idmtracklogo" src="/images/livetracks/track1429.png" alt="TamUA:n mattorata" width="120" height="90" /></a>
+
+        </div -->
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>Length</strong></td>
+                    <td>0.07 km</td>
+                </tr>
+                <tr>
+                    <td><strong>Location</strong></td>
+                    <td>Nokia</td>
+                </tr>
+                <tr>
+                    <td><strong>Status</strong></td>
+                    <td>Online</td>
+                </tr>
+                <tr>
+                    <td><strong>Active</strong></td>
+                    <td>No track activity</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
    */
   
   lazy val parseTrackStatus = {
@@ -121,10 +125,13 @@ class TrackStatusParser(source : Source, conf : MylapsConf) {
     Length(parts(0).toDouble, parts(1))
   }
   
-  /** <div id="idmpassings" title="Passing columns"> */
-  val practiceSessionsTableStartRegex = "<div id=\"idmpassings-col\\d\">".r
-  private def isStartOfPracticeSession(line : String) = 
-    practiceSessionsTableStartRegex.findFirstIn(line).isDefined
+  /** <div class="col-2"><table class="mylaps results" cellspacing="0" summary="MyLaps Practice transponders"> */
+  val practiceSessionsTableStartRegex = "<table.+class=\"mylaps results\"".r
+  private def isStartOfPracticeSession(line : String) = {
+    val r = practiceSessionsTableStartRegex.findFirstIn(line).isDefined
+    if (r) println("Found start line: " + line)
+    r
+  }
   
   private def parsePracticeSessions() : List[PracticeSessionListItem] = {
     val lineWithIndex = lines.zipWithIndex
@@ -139,7 +146,7 @@ class TrackStatusParser(source : Source, conf : MylapsConf) {
     practiceSessionsColEndRegex.findFirstIn(line).isDefined
 
   private def extractPracticeSessionLines(startLineIndex : Int) : List[String] = {
-    val practiceSessionAndEnd = lines.drop(startLineIndex + 1)
+    val practiceSessionAndEnd = lines.drop(startLineIndex)
     practiceSessionAndEnd.takeWhile(!isEndOfPracticeSessionCol(_))
   }
   

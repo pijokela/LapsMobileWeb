@@ -26,7 +26,7 @@ class Html(val conf : UserConf) {
 	  """
 	  
 	val footer = """
-	    <h1><a href="/"><img src="/logo60.png" class="icon" alt="Front page" title="Front page"></img></a> <a href="/app?">Change track</a> <a href="/config"><img src="/config60.png" class="icon" alt="Configuration" title="Change configuration options"></img></a></h1>
+	    <h1><a href="/"><img src="/logo60.png" class="icon" alt="Front page" title="Front page"></img></a> <a href="/app?"><img src="/track60.png" class="icon" alt="Change track" title="Change track"></img></a> <a href="/config"><img src="/config60.png" class="icon" alt="Configuration" title="Change configuration options"></img></a></h1>
         <script src="scripts.js"></script>
 	    </body>
 	  </html>
